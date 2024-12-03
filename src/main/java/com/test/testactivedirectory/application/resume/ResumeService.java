@@ -19,4 +19,9 @@ public class ResumeService {
         return hojadevidaguardada;
 
     }
+
+    public Identity buscarHojaDeVida(Long id) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'buscarHojaDeVida'");
+    }
 }

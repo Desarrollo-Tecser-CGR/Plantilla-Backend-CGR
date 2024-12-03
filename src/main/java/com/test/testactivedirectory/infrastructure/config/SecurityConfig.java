@@ -80,7 +80,7 @@ public class SecurityConfig {
                         "https://665922d5497f3aaadbaaf8b0--melodic-halva-c4b1b1.netlify.app",
                         "https://bovid.site/", "https://bovid.site", "http://bovid.site/",
                         "http://bovid.site", "https://strong-toffee-1046b5.netlify.app/",
-                        "https://strong-toffee-1046b5.netlify.app"));
+                        "https://strong-toffee-1046b5.netlify.app", "http://localhost:4200"));
                 config.setAllowedMethods(Arrays.asList("GET", "POST", "DELETE", "PUT", "OPTIONS"));
                 config.setAllowedHeaders(Arrays.asList("*"));
                 config.setAllowCredentials(true);

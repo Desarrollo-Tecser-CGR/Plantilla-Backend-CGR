@@ -1,12 +1,23 @@
 package com.test.testactivedirectory.infrastructure.persistence.entity.resumen;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.util.Date;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Data
 @Entity
+@JsonIgnoreProperties(ignoreUnknown = true)
 @Table(name = "Identificacion")
 public class Identity {
 
@@ -14,31 +25,45 @@ public class Identity {
     @GeneratedValue(strategy = GenerationType.IDENTITY) // Generación automática del ID
     private Integer id;
 
-    @Column(name = "Fecha_Diligenciamiento", nullable = false)
-    private String fechaDiligenciamiento;
+    // @NotNull , nullable = false
+    @Column(name = "Fecha_Diligenciamiento")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "America/Bogota")
+    private Date fechaDiligenciamiento;
 
-    @Column(name = "Nombre_Entidad", length = 255, nullable = false)
+    //@NotBlank , nullable = false
+    @Column(name = "Nombre_Entidad", length = 255)
     private String nombreEntidad;
 
+    //@NotBlank
     @Column(name = "Nombre_Dependencia_Area", length = 255)
     private String nombreDependenciaArea;
 
-    @Column(name = "Nombre", length = 255, nullable = false)
+    //@NotBlank , nullable = false
+    @Column(name = "Nombre", length = 255)
+    //@Size(min = 1, max = 50)
     private String nombre;
 
+    //@NotBlank
     @Column(name = "Cargo", length = 255)
+    //@Size(min = 1, max = 50)
     private String cargo;
 
+    //@NotBlank
+    //@Email
     @Column(name = "Correo", length = 255)
     private String correo;
 
+    //@NotNull
     @Column(name = "Contacto", length = 255)
+    //@Pattern(regexp = "^\\d{10}$")
     private String contacto;
 
-    @Column(name = "Tipo_Estrategia_Identificacion", length = 255, nullable = false)
+    //, length = 255, nullable = false
+    @Column(name = "Tipo_Estrategia_Identificacion")
     private String tipoEstrategiaIdentificacion;
 
-    @Column(name = "Tipo_Practica", length = 255, nullable = false)
+    //, length = 255, nullable = false
+    @Column(name = "Tipo_Practica", length = 255)
     private String tipoPractica;
 
     @Column(name = "Codigo_Practica", length = 255)
@@ -54,9 +79,11 @@ public class Identity {
     private String nivelBuenaPractica;
 
     @Column(name = "Nombre_Descriptivo_Buena_Practica", length = 255)
+    //@Size(min = 1, max = 100)
     private String nombreDescriptivoBuenaPractica;
 
     @Column(name = "Proposito_Practica", length = 500)
+    //@Size(min = 1, max = 300)
     private String propositoPractica;
 
     @Column(name = "Objetivo_Principal_Practica", length = 500)
@@ -66,6 +93,7 @@ public class Identity {
     private String impactoEsperado;
 
     @Column(name = "Metodologia_Usada", length = 500)
+    //@Size(min = 1, max = 500)
     private String metodologiaUsada;
 
     @Column(name = "Duracion_Implementacion", length = 255)
@@ -74,8 +102,11 @@ public class Identity {
     @Column(name = "Etapas_Metodologia", length = 500)
     private String etapasMetodologia;
 
-    @Column(name = "Periodo_Desarrollo", length = 255)
-    private String periodoDesarrollo;
+    @Column(name = "Periodo_Desarrollo_Inicio", length = 255)
+    private String periodoDesarrolloInicio;
+
+    @Column(name = "Periodo_Desarrollo_Fin", length = 255)
+    private String periodoDesarrolloFin;
 
     @Column(name = "Tipo_Material_Producido", length = 255)
     private String tipoMaterialProducido;
