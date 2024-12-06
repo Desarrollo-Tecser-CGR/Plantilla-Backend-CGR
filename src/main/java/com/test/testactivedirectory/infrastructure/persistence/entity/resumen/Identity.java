@@ -25,45 +25,43 @@ public class Identity {
     @GeneratedValue(strategy = GenerationType.IDENTITY) // Generación automática del ID
     private Integer id;
 
-    // @NotNull , nullable = false
-    @Column(name = "Fecha_Diligenciamiento")
+    @NotNull 
+    @Column(name = "Fecha_Diligenciamiento", nullable = false)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "America/Bogota")
     private Date fechaDiligenciamiento;
 
-    //@NotBlank , nullable = false
-    @Column(name = "Nombre_Entidad", length = 255)
+    @NotBlank 
+    @Column(name = "Nombre_Entidad", length = 255, nullable = false)
     private String nombreEntidad;
 
-    //@NotBlank
+    @NotBlank
     @Column(name = "Nombre_Dependencia_Area", length = 255)
     private String nombreDependenciaArea;
 
-    //@NotBlank , nullable = false
-    @Column(name = "Nombre", length = 255)
-    //@Size(min = 1, max = 50)
+    @NotBlank 
+    @Column(name = "Nombre", length = 255, nullable = false)
+    @Size(min = 1, max = 50)
     private String nombre;
 
-    //@NotBlank
+    @NotBlank
     @Column(name = "Cargo", length = 255)
-    //@Size(min = 1, max = 50)
+    @Size(min = 1, max = 50)
     private String cargo;
 
-    //@NotBlank
-    //@Email
+    @NotBlank
+    @Email
     @Column(name = "Correo", length = 255)
     private String correo;
 
-    //@NotNull
+    @NotNull
     @Column(name = "Contacto", length = 255)
-    //@Pattern(regexp = "^\\d{10}$")
+    @Pattern(regexp = "^\\d{10}$")
     private String contacto;
-
-    //, length = 255, nullable = false
-    @Column(name = "Tipo_Estrategia_Identificacion")
+    
+    @Column(name = "Tipo_Estrategia_Identificacion", length = 255, nullable = false)
     private String tipoEstrategiaIdentificacion;
 
-    //, length = 255, nullable = false
-    @Column(name = "Tipo_Practica", length = 255)
+    @Column(name = "Tipo_Practica", length = 255, nullable = false)
     private String tipoPractica;
 
     @Column(name = "Codigo_Practica", length = 255)
@@ -79,11 +77,11 @@ public class Identity {
     private String nivelBuenaPractica;
 
     @Column(name = "Nombre_Descriptivo_Buena_Practica", length = 255)
-    //@Size(min = 1, max = 100)
+    @Size(min = 1, max = 100)
     private String nombreDescriptivoBuenaPractica;
 
     @Column(name = "Proposito_Practica", length = 500)
-    //@Size(min = 1, max = 300)
+    @Size(min = 1, max = 300)
     private String propositoPractica;
 
     @Column(name = "Objetivo_Principal_Practica", length = 500)
@@ -93,7 +91,7 @@ public class Identity {
     private String impactoEsperado;
 
     @Column(name = "Metodologia_Usada", length = 500)
-    //@Size(min = 1, max = 500)
+    @Size(min = 1, max = 500)
     private String metodologiaUsada;
 
     @Column(name = "Duracion_Implementacion", length = 255)
