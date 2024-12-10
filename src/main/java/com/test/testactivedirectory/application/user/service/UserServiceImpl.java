@@ -21,7 +21,7 @@ public class UserServiceImpl implements UserUseCase {
 
     private final IUserRoleRepository userRoleRepository;
 
-    private final DtoMapper dtoMapper;
+    private final DtoMapper dtoMawpper;
 
     @Transactional(readOnly = true)
     @Override
