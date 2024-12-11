@@ -1,6 +1,10 @@
 package com.test.testactivedirectory.application.resume;
 
+import java.beans.Transient;
+import java.util.List;
+
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.test.testactivedirectory.infrastructure.persistence.entity.resumen.Identity;
 import com.test.testactivedirectory.infrastructure.persistence.repository.HojaDeVida.ResumRepository;
@@ -18,6 +22,11 @@ public class ResumeService {
 
         return hojadevidaguardada;
 
+    }
+
+    @Transactional
+    public List<Identity> getResumAll() {
+        return resumRepository.findAll();
     }
 
     public Identity buscarHojaDeVida(Long id) {
