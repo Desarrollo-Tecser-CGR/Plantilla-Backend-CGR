@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.test.testactivedirectory.application.resume.ResumeService;
+import com.test.testactivedirectory.application.resume.dto.IdentityFilterRequest;
 import com.test.testactivedirectory.infrastructure.persistence.entity.resumen.Identity;
 
 import jakarta.validation.Valid;
@@ -117,11 +118,17 @@ public class HojadevidaController extends AbstractController {
         return fileName;
     }
 
-    @GetMapping("/inbox-bbp")
-    public ResponseEntity<?> getInboxAll() {
-        return ResponseEntity.ok(this.resumeservice.getResumAll());
-
+    @PostMapping("/inbox-bbp")
+    public ResponseEntity<?> getInboxWithFilter(@Valid @RequestBody IdentityFilterRequest filter, BindingResult result) {
+        return this.processRequest(result, () -> ResponseEntity.ok(this.resumeservice.getResumWithFilter(filter)));
     }
+
+    // @PostMapping("guardar")
+    // public ResponseEntity<?> saveHojadevida(@Valid @RequestBody Identity
+    // requesIdentity, BindingResult result) {
+    // return this.processRequest(result, () ->
+    // ResponseEntity.ok(resumeservice.registrarHojaDeVida(requesIdentity)));
+    // }
 
     // Metodo obtener, falta arreglar para que funciona correctamente
     // @GetMapping("/obtener")
