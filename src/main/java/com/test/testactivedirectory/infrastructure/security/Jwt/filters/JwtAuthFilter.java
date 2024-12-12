@@ -54,6 +54,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             "/user/",
             "/role/**",
             "/api/v1/hojadevida",
+            "/api/v1/form",
             "/log/");
 
     /**
@@ -70,6 +71,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         System.out.println("headers:" + request);
         System.out.println("headers:" + request.getHeaders(HttpHeaders.AUTHORIZATION).toString());
         String requestUri = request.getRequestURI();
+        boolean test = urlsToSkip.stream().anyMatch(uri -> requestUri.startsWith(uri));
         return urlsToSkip.stream().anyMatch(uri -> requestUri.startsWith(uri));
     }
 
