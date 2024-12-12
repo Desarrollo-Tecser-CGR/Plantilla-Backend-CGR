@@ -28,4 +28,6 @@ public class IdentityFilterRequest {
 
     private String codigoPractica;
 
+    private String rol;
+
 }
