@@ -11,6 +11,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import org.springframework.scheduling.annotation.EnableAsync;
+
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -40,7 +42,9 @@ public class ApplicationConfig {
     ModelMapper modelMapper() {
         return new ModelMapper();
     }
-
+    @EnableAsync
+    public class AsyncConfig {
+    }
     // @Bean
     // public JwtAuthFilter jwtAuthFilter() {
     // return new JwtAuthFilter(jwtAuthenticationProvider);
