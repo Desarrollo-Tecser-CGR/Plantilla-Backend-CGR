@@ -100,6 +100,30 @@ public class HojadevidaController extends AbstractController {
     }
 
     // Método para guardar el archivo en la carpeta
+=======
+    
+     @PostMapping("guardar")
+     public ResponseEntity<?> saveHojadevida(@Valid @RequestBody Identity requesIdentity, BindingResult result) {
+         return this.processRequest(result, () -> ResponseEntity.ok(resumeservice.registrarHojaDeVida(requesIdentity)));
+     }
+
+     @PostMapping("/cargar-archivo")
+     public ResponseEntity<?> cargarArchivo(@RequestPart(value = "file", required = false) MultipartFile file) {
+         try {
+             if (file != null && !file.isEmpty()) {
+                 // Guardar el archivo
+                 String fileName = saveFile(file);
+                 return ResponseEntity.ok("Archivo cargado exitosamente: " + fileName);
+             } else {
+                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No se proporcionó un archivo.");
+             }
+         } catch (Exception e) {
+             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al guardar el archivo: " + e.getMessage());
+         }
+     }
+     
+     // Método para guardar el archivo en la carpeta
+
     private String saveFile(MultipartFile file) throws IOException {
         // Define la ruta de la carpeta donde deseas guardar los archivos
         String directoryPath = "C:/mi-carpeta-de-archivos/";

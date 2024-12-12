@@ -8,6 +8,9 @@ import com.test.testactivedirectory.application.user.dto.UserWithRolesResponseDt
 public interface UserUseCase {
 
     public abstract List<UserWithRolesResponseDto> findAll();
+    // public abstract List<UserWithRolesResponseDto> findAllRoles();
+    
+    
 
     public abstract UserWithRolesResponseDto assignRolesToUser(UserWithRolesRequestDto requestDto);
 
