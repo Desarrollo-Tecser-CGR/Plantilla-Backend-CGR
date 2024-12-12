@@ -28,18 +28,7 @@ public class UserServiceImpl implements UserUseCase {
     public List<UserWithRolesResponseDto> findAll() {
         List<UserWithRolesResponseDto> users = new ArrayList<>();
         this.userRoleRepository.findAll().forEach(user -> {
-            var userResponsive = new UserWithRolesResponseDto();
-            userResponsive.setIdUser(user.getId());
-            userResponsive.setUserName(user.getSAMAccountName());
-            userResponsive.setFullName(user.getFullName());
-            userResponsive.setEmail(user.getEmail());
-            userResponsive.setPhone(user.getPhone());
-            userResponsive.setEnabled(user.getEnabled());
-            userResponsive.setDateModify(user.getDateModify());
-            userResponsive.setCargo(user.getCargo());
-
-            userResponsive.addRole(user.getRoles());
-
+            var userResponsive = this.maperUserDto(user);
             users.add(userResponsive);
         });
         return users;
@@ -53,6 +42,30 @@ public class UserServiceImpl implements UserUseCase {
         userResponsive.setIdUser(userEntity.getId());
         userResponsive.setUserName(userEntity.getSAMAccountName());
         userResponsive.addRole(userEntity.getRoles());
+        return userResponsive;
+    }
+
+    @Override
+    public List<UserWithRolesResponseDto> findByCargo(String cargo) {
+        return this.userRoleRepository.findByCargo(cargo).stream().map(userEntity -> {
+            return this.maperUserDto(userEntity);
+        }).toList();
+    }
+
+    private UserWithRolesResponseDto maperUserDto(UserEntity user) {
+        var userResponsive = new UserWithRolesResponseDto();
+
+        userResponsive.setIdUser(user.getId());
+        userResponsive.setUserName(user.getSAMAccountName());
+        userResponsive.setFullName(user.getFullName());
+        userResponsive.setEmail(user.getEmail());
+        userResponsive.setPhone(user.getPhone());
+        userResponsive.setEnabled(user.getEnabled());
+        userResponsive.setDateModify(user.getDateModify());
+        userResponsive.setCargo(user.getCargo());
+
+        userResponsive.addRole(user.getRoles());
+
         return userResponsive;
     }
 

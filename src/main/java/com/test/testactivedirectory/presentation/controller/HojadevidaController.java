@@ -5,21 +5,22 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.test.testactivedirectory.application.email.service.EmailService;
 import com.test.testactivedirectory.application.resume.ResumeService;
+import com.test.testactivedirectory.application.user.usecase.UserUseCase;
 import com.test.testactivedirectory.infrastructure.persistence.entity.resumen.Identity;
 
 import jakarta.validation.Valid;
@@ -29,12 +30,56 @@ import jakarta.validation.Valid;
 public class HojadevidaController extends AbstractController{
 
     @Autowired
-    private ResumeService resumeservice;
+    private ResumeService resumeService;
+
+    private UserUseCase userService;
+    private UserController userController;
     
-     @PostMapping("guardar")
-     public ResponseEntity<?> saveHojadevida(@Valid @RequestBody Identity requesIdentity, BindingResult result) {
-         return this.processRequest(result, () -> ResponseEntity.ok(resumeservice.registrarHojaDeVida(requesIdentity)));
-     }
+    @Autowired
+    private EmailService emailService;
+    
+    //  @PostMapping("guardar")
+    //  public ResponseEntity<?> saveHojadevida(@Valid @RequestBody Identity requesIdentity, BindingResult result) {
+    //      return this.processRequest(result, () -> ResponseEntity.ok(resumeService.registrarHojaDeVida(requesIdentity)));
+    //  }
+
+    @PostMapping("guardar")
+    public ResponseEntity<?> saveHojadevida(@Valid @RequestBody Identity requestIdentity, BindingResult result) {
+        if (result.hasErrors()) {
+            return ResponseEntity.badRequest().body("Errores en los datos del formulario.");
+        }
+    
+        // Guardar los datos del formulario
+        Identity savedIdentity = resumeService.registrarHojaDeVida(requestIdentity);
+    
+        // Llamar al método getByCargo del UserController
+        ResponseEntity<?> validadoresResponse = userController.getByCargo("Validador");
+    
+        // Asegurarte de que la respuesta contiene datos válidos
+        if (validadoresResponse.getBody() instanceof List) {
+            List<Identity> validadores = (List<Identity>) validadoresResponse.getBody();
+    
+            if (!validadores.isEmpty()) {
+                // Enviar correos a los validadores
+                String subject = "Nuevo formulario completado";
+                String body = String.format("Hola,\n\nSe ha completado un nuevo formulario por parte de %s.\n\nPor favor revisa los detalles.\n\nSaludos,\nEl equipo.",
+                                            savedIdentity.getNombre());
+    
+                for (Identity validador : validadores) {
+                    emailService.sendEmailAsync(validador.getCorreo(), subject, body);
+                }
+            } else {
+                System.out.println("No se encontraron usuarios con el cargo 'Validador'.");
+            }
+    
+        } else {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al obtener usuarios con el cargo 'Validador'.");
+        }
+    
+        return ResponseEntity.ok("Formulario guardado y notificaciones enviadas si es necesario.");
+    }
+    
+
 
      @PostMapping("/cargar-archivo")
      public ResponseEntity<?> cargarArchivo(@RequestPart(value = "file", required = false) MultipartFile file) {

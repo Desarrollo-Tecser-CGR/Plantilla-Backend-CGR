@@ -5,6 +5,7 @@ server:
 
 # Configuracion  de  la aplicacion  
 spring:
+
   servlet:
     multipart:
       enabled: true
@@ -32,6 +33,19 @@ spring:
     user:
      name: user
      password: $2a$12$od1exy/dPLCsL3yxbJeFcO/AxDCKyYVBjl/bGB.7GgM3aGOWeWc.q
+     #configuracion email - del servidor SMTP   
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: desarrollador9tecsersas@gmail.com
+    password: nryjjckrqzxmrjuc
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+    protocol: smtp
   # Clave secreta JWT
 jwt:
    secret:
@@ -41,5 +55,5 @@ logging:
   level:
        "[org.hibernate.SQL]": debug
 
-
+  
     
