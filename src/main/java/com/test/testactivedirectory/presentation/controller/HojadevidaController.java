@@ -147,6 +147,13 @@ public class HojadevidaController extends AbstractController {
         return this.processRequest(result, () -> ResponseEntity.ok(this.resumeservice.getResumWithFilter(filter)));
     }
 
+
+    @GetMapping("/getIdentity")
+    public ResponseEntity<?> getIdentity() {
+        return ResponseEntity.ok(this.resumeservice.getListIdentity());
+    }
+    
+    
     // @PostMapping("guardar")
     // public ResponseEntity<?> saveHojadevida(@Valid @RequestBody Identity
     // requesIdentity, BindingResult result) {

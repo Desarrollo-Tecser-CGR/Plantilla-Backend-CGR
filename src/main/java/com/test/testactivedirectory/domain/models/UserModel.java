@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class UserModel {
+
+    
     private Long id;
     private String sAMAccountName;
     private String password;    
