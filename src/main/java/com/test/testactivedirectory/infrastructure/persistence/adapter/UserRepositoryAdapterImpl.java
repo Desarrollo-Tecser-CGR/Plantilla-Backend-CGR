@@ -50,4 +50,9 @@ public class UserRepositoryAdapterImpl implements IUserRoleRepository {
         return this.userRepositoryJpa.save(user);
     }
 
+    @Override
+    public List<UserEntity> findByCargo(String cargo) {
+        return this.userRepositoryJpa.findByCargo(cargo);
+    }
+
 }
