@@ -19,10 +19,6 @@ public class Form {
     @GeneratedValue(strategy = GenerationType.IDENTITY) 
     private Integer id;
 
-    @NotBlank 
-    @Column(name = "name_form", length = 255, nullable = false)
-    private String formName;
-
     @NotBlank
     @Lob
     @Column(name = "questions")
