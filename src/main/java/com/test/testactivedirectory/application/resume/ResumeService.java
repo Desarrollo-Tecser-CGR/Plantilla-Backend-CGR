@@ -1,6 +1,5 @@
 package com.test.testactivedirectory.application.resume;
 
-<<<<<<< HEAD
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
@@ -9,7 +8,6 @@ import org.springframework.stereotype.Service;
 import com.test.testactivedirectory.application.email.service.EmailService;
 import com.test.testactivedirectory.application.user.dto.UserWithRolesResponseDto;
 import com.test.testactivedirectory.application.user.usecase.UserUseCase;
-=======
 import java.beans.Transient;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.test.testactivedirectory.application.resume.dto.IdentityFilterRequest;
 import com.test.testactivedirectory.application.resume.dto.IdentityFilterResponsive;
->>>>>>> e5dcd8bbf63f5756ae31bd0583b11815083b8db7
 import com.test.testactivedirectory.infrastructure.persistence.entity.resumen.Identity;
 import com.test.testactivedirectory.infrastructure.persistence.repository.HojaDeVida.ResumRepository;
 import com.test.testactivedirectory.infrastructure.utilities.DtoMapper;
@@ -31,13 +28,10 @@ import lombok.AllArgsConstructor;
 public class ResumeService {
     private final ResumRepository resumRepository;
 
-<<<<<<< HEAD
     private final UserUseCase userService;
 
     private final EmailService emailService;
-=======
     private final DtoMapper mapper;
->>>>>>> e5dcd8bbf63f5756ae31bd0583b11815083b8db7
 
     public Identity registrarHojaDeVida(Identity hojadevida) {
 
