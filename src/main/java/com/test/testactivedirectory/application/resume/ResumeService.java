@@ -10,6 +10,7 @@ import com.test.testactivedirectory.application.user.dto.UserWithRolesResponseDt
 import com.test.testactivedirectory.application.user.usecase.UserUseCase;
 import java.beans.Transient;
 import java.util.List;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
@@ -26,6 +27,7 @@ import lombok.AllArgsConstructor;
 @Service
 @AllArgsConstructor
 public class ResumeService {
+
     private final ResumRepository resumRepository;
 
     private final UserUseCase userService;
@@ -44,6 +46,16 @@ public class ResumeService {
         });
 
         return hojadevidaguardada;
+
+    }
+
+    public List<IdentityFilterResponsive> getListIdentity() {
+        
+        List<Identity> listIdentity = resumRepository.findAll();
+
+        listIdentity = listIdentity.stream().collect(Collectors.toList());
+        // Convertir las entidades filtradas a DTOs de respuesta
+        return this.mapper.convertToListDto(listIdentity, IdentityFilterResponsive.class);
 
     }
 
@@ -76,6 +88,25 @@ public class ResumeService {
                 .filter(identity -> filter.getCodigoPractica() == null ||
                         (identity.getCodigoPractica() != null && identity.getCodigoPractica().toLowerCase()
                                 .contains(filter.getCodigoPractica().toLowerCase())))
+                .filter(identity -> {
+                    if (filter.getRol() == null) {
+                        return true;
+                    }
+                    String estadoFlujo = identity.getEstadoFlujo();
+                    switch (filter.getRol().toLowerCase()) {
+                        case "validador":
+                            return "Candidata".equalsIgnoreCase(estadoFlujo)
+                                    || "validacion".equalsIgnoreCase(estadoFlujo);
+                        case "caracterizador":
+                            return "caracterizacion".equalsIgnoreCase(estadoFlujo);
+                        case "evaluador":
+                            return "evaluacion".equalsIgnoreCase(estadoFlujo);
+                        case "publicador":
+                            return "establecida".equalsIgnoreCase(estadoFlujo);
+                        default:
+                            return true;
+                    }
+                })
                 .collect(Collectors.toList());
 
         // Convertir las entidades filtradas a DTOs de respuesta
