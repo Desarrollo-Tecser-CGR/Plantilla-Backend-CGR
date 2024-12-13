@@ -22,16 +22,27 @@ import com.test.testactivedirectory.application.email.service.EmailService;
 import com.test.testactivedirectory.application.resume.ResumeService;
 import com.test.testactivedirectory.application.user.dto.UserWithRolesResponseDto;
 import com.test.testactivedirectory.application.user.usecase.UserUseCase;
+import com.test.testactivedirectory.application.resume.dto.IdentityFilterRequest;
 import com.test.testactivedirectory.infrastructure.persistence.entity.resumen.Identity;
 
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/v1/hojadevida")
-public class HojadevidaController extends AbstractController {
+public class HojadevidaController extends AbstractController  {
 
     @Autowired
     private ResumeService resumeService;
+    private UserUseCase userService;
+    private UserController userController;
+    
+    @Autowired
+    private EmailService emailService;
+    
+    //  @PostMapping("guardar")
+    //  public ResponseEntity<?> saveHojadevida(@Valid @RequestBody Identity requesIdentity, BindingResult result) {
+    //      return this.processRequest(result, () -> ResponseEntity.ok(resumeService.registrarHojaDeVida(requesIdentity)));
+    //  }
 
     @PostMapping("guardar")
     public ResponseEntity<?> saveHojadevida(@Valid @RequestBody Identity requesIdentity, BindingResult result) {
@@ -39,67 +50,21 @@ public class HojadevidaController extends AbstractController {
     }
 
 
-    // Enviar notificación por correo
-    // String subject = "Formulario completado con éxito";
-    // String body = String.format("Hola %s,\n\nGracias por completar el formulario. Hemos recibido tus datos correctamente.\n\nSaludos,\nEl equipo.",
-    //                              requestIdentity.getNombre());
-    // emailService.sendEmail(requestIdentity.getCorreo(), subject, body);
-    // return ResponseEntity.ok("Formulario guardado y notificación enviada.");
-
-    // @PostMapping("guardar")
-    // public ResponseEntity<?> saveHojadevida(@Valid @RequestBody Identity
-    // requestIdentity, BindingResult result) {
-    // if (result.hasErrors()) {
-    // return ResponseEntity.badRequest().body("Errores en los datos del
-    // formulario.");
-    // }
-
-    // Guardar los datos del formulario
-    // Identity savedIdentity = resumeService.registrarHojaDeVida(requestIdentity);
-
-    // // Llamar al método getByCargo del UserController
-    // ResponseEntity<?> validadoresResponse =
-    // userController.getByCargo("Validador");
-    // List<UserWithRolesResponseDto> usuariosDto =
-    // this.userService.findByCargo("Validador");
-
-    // List<Identity> validadores = (List<Identity>) validadoresResponse.getBody();
-
-    // if (!validadores.isEmpty()) {
-    // // Enviar correos a los validadores
-    // String subject = "Nuevo formulario completado";
-    // String body = String.format(
-    // "Hola,\n\nSe ha completado un nuevo formulario por parte de %s.\n\nPor favor
-    // revisa los detalles.\n\nSaludos,\nEl equipo.",
-    // savedIdentity.getNombre());
-
-    // for (Identity validador : validadores) {
-    // emailService.sendEmailAsync(validador.getCorreo(), subject, body);
-    // }
-    // } else {
-    // System.out.println("No se encontraron usuarios con el cargo 'Validador'.");
-    // }
-
-    // return ResponseEntity.ok("Formulario guardado y notificaciones enviadas si es
-    // necesario.");
-    // }
-
-    @PostMapping("/cargar-archivo")
-    public ResponseEntity<?> cargarArchivo(@RequestPart(value = "file", required = false) MultipartFile file) {
-        try {
-            if (file != null && !file.isEmpty()) {
-                // Guardar el archivo
-                String fileName = saveFile(file);
-                return ResponseEntity.ok("Archivo cargado exitosamente: " + fileName);
-            } else {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No se proporcionó un archivo.");
-            }
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Error al guardar el archivo: " + e.getMessage());
-        }
-    }
-
+     @PostMapping("/cargar-archivo")
+     public ResponseEntity<?> cargarArchivo(@RequestPart(value = "file", required = false) MultipartFile file) {
+         try {
+             if (file != null && !file.isEmpty()) {
+                 // Guardar el archivo
+                 String fileName = saveFile(file);
+                 return ResponseEntity.ok("Archivo cargado exitosamente: " + fileName);
+             } else {
+                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No se proporcionó un archivo.");
+             }
+         } catch (Exception e) {
+             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al guardar el archivo: " + e.getMessage());
+         }
+     }
+     
     // Método para guardar el archivo en la carpeta
     private String saveFile(MultipartFile file) throws IOException {
         // Define la ruta de la carpeta donde deseas guardar los archivos
