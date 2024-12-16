@@ -53,6 +53,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             "/user/synchronize",
             "/user/",
             "/role/**",
+            "/getIdentity/**",
             "/api/v1/hojadevida/inbox-bbp",
             "/api/v1/hojadevida/getIdentity",
             "/log/");

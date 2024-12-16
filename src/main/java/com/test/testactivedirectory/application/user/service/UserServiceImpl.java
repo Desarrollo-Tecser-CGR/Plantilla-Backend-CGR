@@ -10,8 +10,8 @@ import com.test.testactivedirectory.application.user.dto.UserWithRolesRequestDto
 import com.test.testactivedirectory.application.user.dto.UserWithRolesResponseDto;
 import com.test.testactivedirectory.application.user.usecase.UserUseCase;
 import com.test.testactivedirectory.domain.repository.IUserRoleRepository;
-import com.test.testactivedirectory.infrastructure.utilities.DtoMapper;
 import com.test.testactivedirectory.infrastructure.persistence.entity.UserEntity;
+import com.test.testactivedirectory.infrastructure.utilities.DtoMapper;
 
 import lombok.AllArgsConstructor;
 
@@ -28,19 +28,19 @@ public class UserServiceImpl implements UserUseCase {
     public List<UserWithRolesResponseDto> findAll() {
         List<UserWithRolesResponseDto> users = new ArrayList<>();
         this.userRoleRepository.findAll().forEach(user -> {
-            var userResponsive = new UserWithRolesResponseDto();
-            userResponsive.setIdUser(user.getId());
-            userResponsive.setUserName(user.getSAMAccountName());
-            userResponsive.setFullName(user.getFullName());
-            userResponsive.setEmail(user.getEmail());
-            userResponsive.setPhone(user.getPhone());
-            userResponsive.setEnabled(user.getEnabled());
-            userResponsive.setDateModify(user.getDateModify());
-            userResponsive.setCargo(user.getCargo());
+            var userResponse = new UserWithRolesResponseDto();
+            userResponse.setIdUser(user.getId());
+            userResponse.setUserName(user.getSAMAccountName());
+            userResponse.setFullName(user.getFullName());
+            userResponse.setEmail(user.getEmail());
+            userResponse.setPhone(user.getPhone());
+            userResponse.setEnabled(user.getEnabled());
+            userResponse.setDateModify(user.getDateModify());
+            userResponse.setCargo(user.getCargo());
 
-            userResponsive.addRole(user.getRoles());
+            userResponse.addRole(user.getRoles());
 
-            users.add(userResponsive);
+            users.add(userResponse);
         });
         return users;
     }
@@ -49,11 +49,11 @@ public class UserServiceImpl implements UserUseCase {
     @Override
     public UserWithRolesResponseDto assignRolesToUser(UserWithRolesRequestDto requestDto) {
         UserEntity userEntity = this.userRoleRepository.assignRolesToUser(requestDto);
-        var userResponsive = new UserWithRolesResponseDto();
-        userResponsive.setIdUser(userEntity.getId());
-        userResponsive.setUserName(userEntity.getSAMAccountName());
-        userResponsive.addRole(userEntity.getRoles());
-        return userResponsive;
+        var userResponse = new UserWithRolesResponseDto();
+        userResponse.setIdUser(userEntity.getId());
+        userResponse.setUserName(userEntity.getSAMAccountName());
+        userResponse.addRole(userEntity.getRoles());
+        return userResponse;
     }
 
 }
