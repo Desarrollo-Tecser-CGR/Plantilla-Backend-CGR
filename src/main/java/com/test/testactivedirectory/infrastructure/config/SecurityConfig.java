@@ -50,6 +50,7 @@ public class SecurityConfig {
                     auth.requestMatchers("/api/v1/user/**").permitAll();
                     auth.requestMatchers("/api/v1/hojadevida/**").permitAll();
                     auth.requestMatchers("/api/v1/form/**").permitAll();
+                    auth.requestMatchers("/api/v1/hojadevida/inbox-bbp").permitAll();
                     auth.requestMatchers("/admin/**").hasAnyRole(RoleUtil.ADMIN, RoleUtil.FUNCIONARIO,
                             RoleUtil.Usuario);
                     auth.requestMatchers("/user/**").hasAnyRole(RoleUtil.FUNCIONARIO,

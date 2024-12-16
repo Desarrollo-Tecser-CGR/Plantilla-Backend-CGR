@@ -14,5 +14,6 @@ public class AuthResponseDto {
     private String sAMAccountName;
     private String token;
     private Boolean isEnable;
+    private String cargo;
 
 }
