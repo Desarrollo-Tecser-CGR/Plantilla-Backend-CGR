@@ -19,7 +19,6 @@ import com.test.testactivedirectory.application.user.usecase.UserSynchronizerUse
 import com.test.testactivedirectory.application.user.usecase.UserUseCase;
 
 import jakarta.validation.Valid;
-
 @RestController
 @RequestMapping("/api/v1/user")
 public class UserController extends AbstractController {
@@ -27,9 +26,9 @@ public class UserController extends AbstractController {
     private UserUseCase userService;
 
     private UserSynchronizerUseCase synchronizerUsers;
-
-    // private UserUseCase userRepository;
-
+    
+        // private UserUseCase userRepository; 
+ 
     public UserController(UserUseCase userService, UserSynchronizerUseCase synchronizerUsers) {
         this.userService = userService;
         this.synchronizerUsers = synchronizerUsers;

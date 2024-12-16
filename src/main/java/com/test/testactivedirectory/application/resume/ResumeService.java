@@ -1,7 +1,16 @@
 package com.test.testactivedirectory.application.resume;
 
+import java.util.List;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+
+import com.test.testactivedirectory.application.email.service.EmailService;
+import com.test.testactivedirectory.application.user.dto.UserWithRolesResponseDto;
+import com.test.testactivedirectory.application.user.usecase.UserUseCase;
 import java.beans.Transient;
 import java.util.List;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
@@ -18,15 +27,35 @@ import lombok.AllArgsConstructor;
 @Service
 @AllArgsConstructor
 public class ResumeService {
+
     private final ResumRepository resumRepository;
 
+    private final UserUseCase userService;
+
+    private final EmailService emailService;
     private final DtoMapper mapper;
 
     public Identity registrarHojaDeVida(Identity hojadevida) {
 
         Identity hojadevidaguardada = resumRepository.save(hojadevida);
 
+        List<UserWithRolesResponseDto> usuarios = this.userService.findByCargo("Validador");
+
+        usuarios.forEach(usuario -> {
+            sendEmailAsync(usuario);
+        });
+
         return hojadevidaguardada;
+
+    }
+
+    public List<IdentityFilterResponsive> getListIdentity() {
+        
+        List<Identity> listIdentity = resumRepository.findAll();
+
+        listIdentity = listIdentity.stream().collect(Collectors.toList());
+        // Convertir las entidades filtradas a DTOs de respuesta
+        return this.mapper.convertToListDto(listIdentity, IdentityFilterResponsive.class);
 
     }
 
@@ -59,6 +88,25 @@ public class ResumeService {
                 .filter(identity -> filter.getCodigoPractica() == null ||
                         (identity.getCodigoPractica() != null && identity.getCodigoPractica().toLowerCase()
                                 .contains(filter.getCodigoPractica().toLowerCase())))
+                .filter(identity -> {
+                    if (filter.getRol() == null) {
+                        return true;
+                    }
+                    String estadoFlujo = identity.getEstadoFlujo();
+                    switch (filter.getRol().toLowerCase()) {
+                        case "validador":
+                            return "Candidata".equalsIgnoreCase(estadoFlujo)
+                                    || "validacion".equalsIgnoreCase(estadoFlujo);
+                        case "caracterizador":
+                            return "caracterizacion".equalsIgnoreCase(estadoFlujo);
+                        case "evaluador":
+                            return "evaluacion".equalsIgnoreCase(estadoFlujo);
+                        case "publicador":
+                            return "establecida".equalsIgnoreCase(estadoFlujo);
+                        default:
+                            return true;
+                    }
+                })
                 .collect(Collectors.toList());
 
         // Convertir las entidades filtradas a DTOs de respuesta
@@ -68,5 +116,13 @@ public class ResumeService {
     public Identity buscarHojaDeVida(Long id) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'buscarHojaDeVida'");
+    }
+
+    private void sendEmailAsync(UserWithRolesResponseDto user) {
+        String subject = "Formulario completado con éxito";
+        String body = String.format(
+                "Hola %s,\n\nGracias por completar el formulario. Hemos recibido tus datos correctamente.\n\nSaludos,\nEl equipo.",
+                user.getFullName());
+        emailService.sendEmailAsync(user.getEmail(), subject, body);
     }
 }

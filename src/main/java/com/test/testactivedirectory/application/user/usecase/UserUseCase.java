@@ -9,6 +9,9 @@ import com.test.testactivedirectory.infrastructure.persistence.entity.UserEntity
 public interface UserUseCase {
 
     public abstract List<UserWithRolesResponseDto> findAll();
+    // public abstract List<UserWithRolesResponseDto> findAllRoles();
+    
+    
 
     public abstract UserWithRolesResponseDto assignRolesToUser(UserWithRolesRequestDto requestDto);
 
