@@ -48,6 +48,8 @@ public class SecurityConfig {
                     auth.requestMatchers("/api/v1/log/**").permitAll();
                     auth.requestMatchers("/api/v1/role/**").permitAll();
                     auth.requestMatchers("/api/v1/user/**").permitAll();
+                    auth.requestMatchers("/api/v1/hojadevida/**").permitAll();
+                    auth.requestMatchers("/api/v1/form/**").permitAll();
                     auth.requestMatchers("/api/v1/hojadevida/inbox-bbp").permitAll();
                     auth.requestMatchers("/api/v1/hojadevida/getIdentity").permitAll();
                     auth.requestMatchers("/api/v1/hojadevida/guardar").permitAll();
