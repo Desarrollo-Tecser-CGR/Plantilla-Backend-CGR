@@ -24,28 +24,18 @@ public class UserController extends AbstractController {
     private UserUseCase userService;
 
     private UserSynchronizerUseCase synchronizerUsers;
-    
-        // private UserUseCase userRepository;
-     
-        public UserController(UserUseCase userService, UserSynchronizerUseCase synchronizerUsers) {
-            this.userService = userService;
-            this.synchronizerUsers = synchronizerUsers;
-        }
-     
-        @GetMapping
-        public Map<String, Object> getAll() {
-            Map<String, Object> json = new HashMap<>();
-            json.put("usuarios", this.userService.findAll());
-            return json;
-        }
-    
-        // @GetMapping("rr")
-        // public Map<String, Object> getUserRoles() {
-        //     Map<String, Object> json = new HashMap<>();
-        //     json.put("usuarios", this.userService.findAllRoles());
-        //     return json;
-        // }
-    // private UserUseCase userRepository;
+ 
+    public UserController(UserUseCase userService, UserSynchronizerUseCase synchronizerUsers) {
+        this.userService = userService;
+        this.synchronizerUsers = synchronizerUsers;
+    }
+
+    @GetMapping
+    public Map<String, Object> getAll() {
+        Map<String, Object> json = new HashMap<>();
+        json.put("usuarios", this.userService.findAll());
+        return json;
+    }
 
     @PostMapping
     public ResponseEntity<?> create(@Valid @RequestBody UserWithRolesRequestDto rolesRequestDto, BindingResult result) {

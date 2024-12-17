@@ -48,6 +48,8 @@ public class SecurityConfig {
                     auth.requestMatchers("/api/v1/log/**").permitAll();
                     auth.requestMatchers("/api/v1/role/**").permitAll();
                     auth.requestMatchers("/api/v1/user/**").permitAll();
+                    auth.requestMatchers("/api/v1/hojadevida/**").permitAll();
+                    auth.requestMatchers("/api/v1/form/**").permitAll();
                     auth.requestMatchers("/api/v1/hojadevida/inbox-bbp").permitAll();
                     auth.requestMatchers("/api/v1/hojadevida/getIdentity").permitAll();
                     auth.requestMatchers("/api/v1/hojadevida/getIdentity/**").permitAll();
@@ -77,7 +79,7 @@ public class SecurityConfig {
             public CorsConfiguration getCorsConfiguration(@NonNull HttpServletRequest request) {
                 CorsConfiguration config = new CorsConfiguration();
                 config.setAllowedOrigins(Arrays.asList("http://localhost:5173", "http://localhost:4200",
-                        "http://localhost:5173/", "http://192.168.0.220/",
+                        "http://localhost:5173/","http://localhost:5000/", "http://192.168.0.220/",
                         "http://localhost:8000/", "http://localhost:8000",
                         "http://localhost:48496", "https://665922d5497f3aaadbaaf8b0--melodic-halva-c4b1b1.netlify.app/",
                         "https://665922d5497f3aaadbaaf8b0--melodic-halva-c4b1b1.netlify.app",
