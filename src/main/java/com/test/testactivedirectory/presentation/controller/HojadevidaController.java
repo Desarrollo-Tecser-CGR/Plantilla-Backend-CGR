@@ -40,11 +40,6 @@ public class HojadevidaController extends AbstractController  {
     @Autowired
     private EmailService emailService;
     
-    //  @PostMapping("guardar")
-    //  public ResponseEntity<?> saveHojadevida(@Valid @RequestBody Identity requesIdentity, BindingResult result) {
-    //      return this.processRequest(result, () -> ResponseEntity.ok(resumeService.registrarHojaDeVida(requesIdentity)));
-    //  }
-
     @PostMapping("/guardar")
     public ResponseEntity<?> saveHojadevida(@Valid @RequestBody Identity requesIdentity, BindingResult result) {
         return this.processRequest(result, () -> ResponseEntity.ok(resumeService.registrarHojaDeVida(requesIdentity)));

@@ -12,6 +12,8 @@ import java.beans.Transient;
 import java.util.List;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -118,11 +120,94 @@ public class ResumeService {
         throw new UnsupportedOperationException("Unimplemented method 'buscarHojaDeVida'");
     }
 
+    // private void sendEmailAsync(UserWithRolesResponseDto user) {
+    //     String subject = "Formulario completado con éxito";
+    //     String body = String.format(
+    //             "Hola %s,\n\nGracias por completar el formulario. Hemos recibido tus datos correctamente.\n\nSaludos,\nEl equipo.",
+    //             user.getFullName());        
+    //     emailService.sendEmailAsync(user.getEmail(), subject, body);
+    // }
+
     private void sendEmailAsync(UserWithRolesResponseDto user) {
-        String subject = "Formulario completado con éxito";
-        String body = String.format(
-                "Hola %s,\n\nGracias por completar el formulario. Hemos recibido tus datos correctamente.\n\nSaludos,\nEl equipo.",
-                user.getFullName());
-        emailService.sendEmailAsync(user.getEmail(), subject, body);
+        String subject = "Confirmación de Correo Electrónico";
+    
+        // Contenido HTML de la plantilla
+        String htmlContent = """
+                <style>
+                    body {
+                        font-family: Arial, sans-serif;
+                        background-color: #f4f4f4;
+                        margin: 0;
+                        padding: 0;
+                    }
+                    .email-container {
+                        max-width: 600px;
+                        margin: 20px auto;
+                        background-color: #ffffff;
+                        border: 1px solid #dddddd;
+                        border-radius: 8px;
+                        padding: 20px;
+                    }
+                    .header {
+                        text-align: center;
+                        padding: 20px 0;
+                        border-bottom: 1px solid #dddddd;
+                    }
+                    .header h1 {
+                        color: #333333;
+                        margin: 0;
+                        font-size: 24px;
+                    }
+                    .content {
+                        padding: 20px;
+                        color: #555555;
+                        font-size: 16px;
+                        line-height: 1.6;
+                    }
+                    .button-container {
+                        text-align: center;
+                        margin: 20px 0;
+                    }
+                    .button {
+                        background-color: #007bff;
+                        color: #ffffff;
+                        padding: 10px 20px;
+                        text-decoration: none;
+                        border-radius: 5px;
+                        font-size: 16px;
+                    }
+                    .footer {
+                        text-align: center;
+                        font-size: 12px;
+                        color: #999999;
+                        padding: 10px;
+                    }
+                </style>
+                <div class="email-container">
+                    <div class="header">
+                        <h1>Confirmación de Correo Electrónico</h1>
+                    </div>
+                    <div class="content">
+                        <p>Estimado/a <strong>%s</strong>,</p>
+                        <p>Gracias por registrarte con nosotros. Por favor, confirma tu dirección de correo electrónico haciendo clic en el botón de abajo.</p>
+                        <div class="button-container">
+                            <a href="http://localhost:4200/example" class="button">Ingrese Aquí</a>
+                        </div>
+                        <p>Si no solicitaste esta verificación, puedes ignorar este mensaje.</p>
+                        <p>Atentamente,<br>El equipo de [Tu Empresa]</p>
+                    </div>
+                    <div class="footer">
+                        <p>Este correo fue enviado automáticamente. Por favor, no respondas a este mensaje.</p>
+                        <p>&copy; 2024 [Tu Empresa]. Todos los derechos reservados.</p>
+                    </div>
+                </div>
+                """;
+    
+        // Personalizar la plantilla con el nombre del usuario
+        String formattedHtmlContent = String.format(htmlContent, user.getFullName());
+    
+        // Llamada al método de tu emailService (ajustar aquí para contenido HTML)
+        emailService.sendHtmlEmailAsync(user.getEmail(), subject, formattedHtmlContent);
     }
+    
 }
