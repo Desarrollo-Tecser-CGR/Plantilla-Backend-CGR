@@ -42,7 +42,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     /**
      * Lista blanca de URIs
      */
-    private List<String> urlsToSkip = List.of(
+    private final List<String> urlsToSkip = List.of(
             "/api/v1/auth",
             "/api/v1/",
             "/auth",
@@ -53,13 +53,15 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             "/user/synchronize",
             "/user/",
             "/role/**",
+            "/getIdentity/**",
             "/api/v1/hojadevida",
             "/api/v1/form",
-            // "/api/v1/hojadevida/",
             "/api/v1/hojadevida/**",
             "/api/v1/hojadevida/guardar",
             "/api/v1/hojadevida/inbox-bbp",
             "/api/v1/hojadevida/getIdentity",
+            "/api/v1/hojadevida/updateIdentity",
+
             "/log/");
 
     /**
@@ -220,11 +222,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
         AuthResponseDto userDto = jwtService.getUserDto(token);
 
-        if (userDto.getIsEnable()) {
-            return true;
-        }
-
-        return false;
+        return userDto.getIsEnable();
     }
 
 }

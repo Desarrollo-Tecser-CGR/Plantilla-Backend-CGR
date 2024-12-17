@@ -5,14 +5,15 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -21,9 +22,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.test.testactivedirectory.application.email.service.EmailService;
 import com.test.testactivedirectory.application.resume.ResumeService;
-import com.test.testactivedirectory.application.user.dto.UserWithRolesResponseDto;
-import com.test.testactivedirectory.application.user.usecase.UserUseCase;
 import com.test.testactivedirectory.application.resume.dto.IdentityFilterRequest;
+import com.test.testactivedirectory.application.user.usecase.UserUseCase;
+import com.test.testactivedirectory.infrastructure.exception.customException.ResourceNotFoundException;
 import com.test.testactivedirectory.infrastructure.persistence.entity.resumen.Identity;
 
 import jakarta.validation.Valid;
@@ -90,19 +91,36 @@ public class HojadevidaController extends AbstractController  {
     public ResponseEntity<?> getIdentity() {
         return ResponseEntity.ok(this.resumeService.getListIdentity());
     }
+
+    @GetMapping("/getIdentity/{id}")
+    public ResponseEntity<?> getIdentityById(@PathVariable Long id) {
+        return ResponseEntity.ok(this.resumeService.getIdentityById(id));
+    }
+
+    @PutMapping("/updateIdentity/{id}")
+    public ResponseEntity<?> updateIdentityById(@PathVariable Long id, @RequestBody Identity updatedIdentity) {
+        try {
+        Identity updatedEntity = resumeService.updateIdentityById(id, updatedIdentity);
+        return ResponseEntity.ok(updatedEntity);
+        } catch (ResourceNotFoundException e) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+
+
     
     // @PostMapping("guardar")
     // public ResponseEntity<?> saveHojadevida(@Valid @RequestBody Identity
     // requesIdentity, BindingResult result) {
     // return this.processRequest(result, () ->
-    // ResponseEntity.ok(resumeservice.registrarHojaDeVida(requesIdentity)));
+    // ResponseEntity.ok(resumeService.registrarHojaDeVida(requesIdentity)));
     // }
     // Metodo obtener, falta arreglar para que funciona correctamente
     // @GetMapping("/obtener")
     // public ResponseEntity<?> getHojadevida(@RequestParam("id") Long id) {
     // try {
     // // Buscar la hoja de vida en la base de datos por ID
-    // Identity identity = resumeservice.buscarHojaDeVida(id);
+    // Identity identity = resumeService.buscarHojaDeVida(id);
     // if (identity == null) {
     // return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Hoja de vida no
     // encontrada.");

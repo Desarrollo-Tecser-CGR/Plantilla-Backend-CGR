@@ -1,16 +1,6 @@
 package com.test.testactivedirectory.application.resume;
 
 import java.util.List;
-
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
-
-import com.test.testactivedirectory.application.email.service.EmailService;
-import com.test.testactivedirectory.application.user.dto.UserWithRolesResponseDto;
-import com.test.testactivedirectory.application.user.usecase.UserUseCase;
-import java.beans.Transient;
-import java.util.List;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
@@ -18,8 +8,12 @@ import jakarta.mail.internet.MimeMessage;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.test.testactivedirectory.application.email.service.EmailService;
 import com.test.testactivedirectory.application.resume.dto.IdentityFilterRequest;
-import com.test.testactivedirectory.application.resume.dto.IdentityFilterResponsive;
+import com.test.testactivedirectory.application.resume.dto.IdentityFilterResponse;
+import com.test.testactivedirectory.application.user.dto.UserWithRolesResponseDto;
+import com.test.testactivedirectory.application.user.usecase.UserUseCase;
+import com.test.testactivedirectory.infrastructure.exception.customException.ResourceNotFoundException;
 import com.test.testactivedirectory.infrastructure.persistence.entity.resumen.Identity;
 import com.test.testactivedirectory.infrastructure.persistence.repository.HojaDeVida.ResumRepository;
 import com.test.testactivedirectory.infrastructure.utilities.DtoMapper;
@@ -51,18 +45,36 @@ public class ResumeService {
 
     }
 
-    public List<IdentityFilterResponsive> getListIdentity() {
-        
+    @Transactional
+    public List<IdentityFilterResponse> getListIdentity() {
+
         List<Identity> listIdentity = resumRepository.findAll();
 
         listIdentity = listIdentity.stream().collect(Collectors.toList());
         // Convertir las entidades filtradas a DTOs de respuesta
-        return this.mapper.convertToListDto(listIdentity, IdentityFilterResponsive.class);
+        return this.mapper.convertToListDto(listIdentity, IdentityFilterResponse.class);
+    }
+
+    @Transactional
+    public Identity getIdentityById(Long id) {
+        return resumRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("la hoja de vida con id=" + id + " no existe"));
+    }
+
+    @Transactional
+    public Identity updateIdentityById(Long id, Identity updateIdentityById) {
+        // Buscar la entidad existente
+        Identity existingIdentity = resumRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("La hoja de vida con id=" + id + " no existe"));
+
+        updateIdentityById.setId(id.intValue());
+
+        return this.resumRepository.save(updateIdentityById);
 
     }
 
     @Transactional
-    public List<IdentityFilterResponsive> getResumWithFilter(IdentityFilterRequest filter) {
+    public List<IdentityFilterResponse> getResumWithFilter(IdentityFilterRequest filter) {
         // Obtener todas las entidades
         List<Identity> identities = resumRepository.findAll();
 
@@ -112,7 +124,7 @@ public class ResumeService {
                 .collect(Collectors.toList());
 
         // Convertir las entidades filtradas a DTOs de respuesta
-        return this.mapper.convertToListDto(filteredIdentities, IdentityFilterResponsive.class);
+        return this.mapper.convertToListDto(filteredIdentities, IdentityFilterResponse.class);
     }
 
     public Identity buscarHojaDeVida(Long id) {

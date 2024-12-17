@@ -1,9 +1,7 @@
 package com.test.testactivedirectory.presentation.controller;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -26,8 +24,6 @@ public class UserController extends AbstractController {
     private UserUseCase userService;
 
     private UserSynchronizerUseCase synchronizerUsers;
-    
-        // private UserUseCase userRepository; 
  
     public UserController(UserUseCase userService, UserSynchronizerUseCase synchronizerUsers) {
         this.userService = userService;
