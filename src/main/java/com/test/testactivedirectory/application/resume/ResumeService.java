@@ -1,19 +1,16 @@
 package com.test.testactivedirectory.application.resume;
 
 import java.util.List;
-
-import org.springframework.stereotype.Service;
-
-import com.test.testactivedirectory.application.email.service.EmailService;
-import com.test.testactivedirectory.application.user.dto.UserWithRolesResponseDto;
-import com.test.testactivedirectory.application.user.usecase.UserUseCase;
-
 import java.util.stream.Collectors;
 
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.test.testactivedirectory.application.email.service.EmailService;
 import com.test.testactivedirectory.application.resume.dto.IdentityFilterRequest;
 import com.test.testactivedirectory.application.resume.dto.IdentityFilterResponse;
+import com.test.testactivedirectory.application.user.dto.UserWithRolesResponseDto;
+import com.test.testactivedirectory.application.user.usecase.UserUseCase;
 import com.test.testactivedirectory.infrastructure.exception.customException.ResourceNotFoundException;
 import com.test.testactivedirectory.infrastructure.persistence.entity.resumen.Identity;
 import com.test.testactivedirectory.infrastructure.persistence.repository.HojaDeVida.ResumRepository;
@@ -48,7 +45,7 @@ public class ResumeService {
 
     @Transactional
     public List<IdentityFilterResponse> getListIdentity() {
-        
+
         List<Identity> listIdentity = resumRepository.findAll();
 
         listIdentity = listIdentity.stream().collect(Collectors.toList());
@@ -57,8 +54,21 @@ public class ResumeService {
     }
 
     @Transactional
-    public Identity getIdentityById(Long id){
-        return resumRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("la hoja de vida con id=" + id + " no existe"));
+    public Identity getIdentityById(Long id) {
+        return resumRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("la hoja de vida con id=" + id + " no existe"));
+    }
+
+    @Transactional
+    public Identity updateIdentityById(Long id, Identity updateIdentityById) {
+        // Buscar la entidad existente
+        Identity existingIdentity = resumRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("La hoja de vida con id=" + id + " no existe"));
+
+        updateIdentityById.setId(id.intValue());
+
+        return this.resumRepository.save(updateIdentityById);
+
     }
 
     @Transactional
