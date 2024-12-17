@@ -88,7 +88,6 @@ public class HojadevidaController extends AbstractController  {
     @PostMapping("/inbox-bbp")
     public ResponseEntity<?> getInboxWithFilter(@Valid @RequestBody IdentityFilterRequest filter, BindingResult result) {
         return this.processRequest(result, () -> ResponseEntity.ok(this.resumeService.getResumWithFilter(filter)));
-        return this.processRequest(result, () -> ResponseEntity.ok(this.resumeService.getResumWithFilter(filter)));
     }
 
 
