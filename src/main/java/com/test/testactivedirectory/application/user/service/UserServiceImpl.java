@@ -11,7 +11,6 @@ import com.test.testactivedirectory.application.user.dto.UserWithRolesResponseDt
 import com.test.testactivedirectory.application.user.usecase.UserUseCase;
 import com.test.testactivedirectory.domain.repository.IUserRoleRepository;
 import com.test.testactivedirectory.infrastructure.persistence.entity.UserEntity;
-import com.test.testactivedirectory.infrastructure.utilities.DtoMapper;
 
 import lombok.AllArgsConstructor;
 
@@ -20,8 +19,6 @@ import lombok.AllArgsConstructor;
 public class UserServiceImpl implements UserUseCase {
 
     private final IUserRoleRepository userRoleRepository;
-
-    private final DtoMapper dtoMawpper;
 
     @Transactional(readOnly = true)
     @Override
@@ -53,6 +50,30 @@ public class UserServiceImpl implements UserUseCase {
         userResponse.setIdUser(userEntity.getId());
         userResponse.setUserName(userEntity.getSAMAccountName());
         userResponse.addRole(userEntity.getRoles());
+        return userResponse;
+    }
+
+    @Override
+    public List<UserWithRolesResponseDto> findByCargo(String cargo) {
+        return this.userRoleRepository.findByCargo(cargo).stream().map(userEntity -> {
+            return this.maperUserDto(userEntity);
+        }).toList();
+    }
+
+    private UserWithRolesResponseDto maperUserDto(UserEntity user) {
+        var userResponse = new UserWithRolesResponseDto();
+
+        userResponse.setIdUser(user.getId());
+        userResponse.setUserName(user.getSAMAccountName());
+        userResponse.setFullName(user.getFullName());
+        userResponse.setEmail(user.getEmail());
+        userResponse.setPhone(user.getPhone());
+        userResponse.setEnabled(user.getEnabled());
+        userResponse.setDateModify(user.getDateModify());
+        userResponse.setCargo(user.getCargo());
+
+        userResponse.addRole(user.getRoles());
+
         return userResponse;
     }
 

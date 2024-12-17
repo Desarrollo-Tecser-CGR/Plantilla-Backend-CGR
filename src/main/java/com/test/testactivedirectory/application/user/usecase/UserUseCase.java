@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.test.testactivedirectory.application.user.dto.UserWithRolesRequestDto;
 import com.test.testactivedirectory.application.user.dto.UserWithRolesResponseDto;
+import com.test.testactivedirectory.infrastructure.persistence.entity.UserEntity;
 
 public interface UserUseCase {
 
@@ -13,5 +14,7 @@ public interface UserUseCase {
     
 
     public abstract UserWithRolesResponseDto assignRolesToUser(UserWithRolesRequestDto requestDto);
+
+    public abstract List<UserWithRolesResponseDto> findByCargo(String cargo);
 
 }

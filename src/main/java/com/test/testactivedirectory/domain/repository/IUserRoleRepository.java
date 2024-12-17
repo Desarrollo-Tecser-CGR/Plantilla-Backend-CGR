@@ -11,4 +11,6 @@ public interface IUserRoleRepository {
 
     public abstract UserEntity assignRolesToUser(UserWithRolesRequestDto requestDto);
 
+    public abstract List<UserEntity> findByCargo(String cargo);
+
 }

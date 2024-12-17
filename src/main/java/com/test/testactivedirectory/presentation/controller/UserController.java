@@ -1,13 +1,12 @@
 package com.test.testactivedirectory.presentation.controller;
- 
+
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,14 +17,12 @@ import com.test.testactivedirectory.application.user.usecase.UserSynchronizerUse
 import com.test.testactivedirectory.application.user.usecase.UserUseCase;
 
 import jakarta.validation.Valid;
-
- 
 @RestController
 @RequestMapping("/api/v1/user")
 public class UserController extends AbstractController {
- 
+
     private UserUseCase userService;
- 
+
     private UserSynchronizerUseCase synchronizerUsers;
     
         // private UserUseCase userRepository;
@@ -48,19 +45,24 @@ public class UserController extends AbstractController {
         //     json.put("usuarios", this.userService.findAllRoles());
         //     return json;
         // }
-    
- 
+    // private UserUseCase userRepository;
+
     @PostMapping
     public ResponseEntity<?> create(@Valid @RequestBody UserWithRolesRequestDto rolesRequestDto, BindingResult result) {
         return this.processRequest(result,
                 () -> ResponseEntity.ok(this.userService.assignRolesToUser(rolesRequestDto)));
     }
- 
+
     @GetMapping("/synchronize")
     public Map<String, Object> synchronizeAD() {
         Map<String, Object> json = new HashMap<>();
         json.put("sincronizacion", this.synchronizerUsers.synchronizeUsers());
         return json;
     }
- 
+
+    @GetMapping("/cargo/{cargo}")
+    public ResponseEntity<?> getByCargo(@PathVariable String cargo) {
+        return ResponseEntity.ok(this.userService.findByCargo(cargo));
+    }
+
 }
