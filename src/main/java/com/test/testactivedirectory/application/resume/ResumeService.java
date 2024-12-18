@@ -72,6 +72,36 @@ public class ResumeService {
     }
 
     @Transactional
+    public Identity updateStatusById(Long id, Identity updatedEntity) {
+        // Verifica si el ID proporcionado no es nulo
+        if (id == null) {
+            throw new IllegalArgumentException("El ID proporcionado no puede ser nulo.");
+        }
+
+        // Obtén la entidad existente
+        Identity existingEntity = this.getIdentityById(id);
+        if (existingEntity == null) {
+            throw new IllegalArgumentException("La entidad con el ID proporcionado no existe.");
+        }
+
+        // Actualiza solo los campos necesarios
+        if (updatedEntity.getEstadoFlujo() != null) {
+            existingEntity.setEstadoFlujo(updatedEntity.getEstadoFlujo());
+        } else {
+            throw new IllegalArgumentException("El campo 'estadoFlujo' no puede ser nulo.");
+        }
+
+        // Guarda la entidad actualizada
+        try {
+            return resumRepository.save(existingEntity);
+        } catch (Exception e) {
+            // Lanza una excepción más específica si la operación de guardado falla
+            throw new RuntimeException("Error al guardar la entidad en la base de datos: " + e.getMessage(), e);
+        }
+
+    }
+
+    @Transactional
     public List<IdentityFilterResponse> getResumWithFilter(IdentityFilterRequest filter) {
         // Obtener todas las entidades
         List<Identity> identities = resumRepository.findAll();
