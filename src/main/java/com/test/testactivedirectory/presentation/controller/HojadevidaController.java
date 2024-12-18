@@ -103,14 +103,7 @@ public class HojadevidaController extends AbstractController {
             @RequestBody ValidateStatusDto request,
             final HttpServletRequest servletRequest) {
         try {
-            Identity updatedEntity = this.resumeService.getIdentityById(request.getId());
-            if (updatedEntity == null) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .body("La entidad con el ID proporcionado no fue encontrada.");
-            }
-
-            updatedEntity.setEstadoFlujo("validacion");
-            updatedEntity = this.resumeService.updateStatusById(request.getId(), updatedEntity);
+            Identity updatedEntity = this.resumeService.updateStatusById(request.getId());
 
             return ResponseEntity.ok(updatedEntity);
         } catch (Exception e) {

@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.test.testactivedirectory.application.email.service.EmailService;
 import com.test.testactivedirectory.application.resume.dto.IdentityFilterRequest;
 import com.test.testactivedirectory.application.resume.dto.IdentityFilterResponse;
+import com.test.testactivedirectory.application.resume.dto.ValidateStatusDto;
 import com.test.testactivedirectory.application.user.dto.UserWithRolesResponseDto;
 import com.test.testactivedirectory.application.user.usecase.UserUseCase;
 import com.test.testactivedirectory.infrastructure.exception.customException.ResourceNotFoundException;
@@ -72,7 +73,7 @@ public class ResumeService {
     }
 
     @Transactional
-    public Identity updateStatusById(Long id, Identity updatedEntity) {
+    public Identity updateStatusById(Long id) {
         // Verifica si el ID proporcionado no es nulo
         if (id == null) {
             throw new IllegalArgumentException("El ID proporcionado no puede ser nulo.");
@@ -83,14 +84,7 @@ public class ResumeService {
         if (existingEntity == null) {
             throw new IllegalArgumentException("La entidad con el ID proporcionado no existe.");
         }
-
-        // Actualiza solo los campos necesarios
-        if (updatedEntity.getEstadoFlujo() != null) {
-            existingEntity.setEstadoFlujo(updatedEntity.getEstadoFlujo());
-        } else {
-            throw new IllegalArgumentException("El campo 'estadoFlujo' no puede ser nulo.");
-        }
-
+            existingEntity.setEstadoFlujo("validador");
         // Guarda la entidad actualizada
         try {
             return resumRepository.save(existingEntity);
