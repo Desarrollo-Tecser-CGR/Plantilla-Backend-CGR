@@ -14,7 +14,6 @@ import lombok.NoArgsConstructor;
 public class ValidateStatusDto {
     
     private String rol;
-    public Long id;   
-  
+    public Long id;
 
 }
