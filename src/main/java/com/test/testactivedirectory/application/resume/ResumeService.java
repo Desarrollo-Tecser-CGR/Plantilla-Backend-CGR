@@ -80,13 +80,14 @@ public class ResumeService {
 
         // Obtén la entidad existente
         Identity existingEntity = this.resumRepository.findById(id).get();
+        
         if (existingEntity == null) {
             throw new IllegalArgumentException("La entidad con el ID proporcionado no existe.");
         }
-            existingEntity.setEstadoFlujo("validador");
+            existingEntity.setEstadoFlujo("validacion");
         // Guarda la entidad actualizada
         try {
-            return existingEntity;
+            return this.resumRepository.save(existingEntity);
         } catch (Exception e) {
             // Lanza una excepción más específica si la operación de guardado falla
             throw new RuntimeException("Error al guardar la entidad en la base de datos: " + e.getMessage(), e);
