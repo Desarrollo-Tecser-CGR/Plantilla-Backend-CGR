@@ -142,6 +142,7 @@ public class ResumeService {
 
     private void sendEmailAsync(UserWithRolesResponseDto user) {
         String subject = "Confirmación de Correo Electrónico";
+        String imagePath = "C:\\Users\\sergio.alonso\\OneDrive - AIRES Y TECNOLOGIA SAS\\Escritorio\\Banco Buenas Practicas\\backend-buenasPracticas-CGR\\src\\main\\resources\\img\\logo.png";
     
         // Contenido HTML de la plantilla
         String htmlContent = """
@@ -196,21 +197,18 @@ public class ResumeService {
                     }
                 </style>
                 <div class="email-container">
+                    <img src="cid:logo" alt="Logo de la empresa" style="width:200px;height:auto;"/>
                     <div class="header">
                         <h1>Confirmación de Correo Electrónico</h1>
                     </div>
                     <div class="content">
                         <p>Estimado/a <strong>%s</strong>,</p>
-                        <p>Gracias por registrarte con nosotros. Por favor, confirma tu dirección de correo electrónico haciendo clic en el botón de abajo.</p>
-                        <div class="button-container">
-                            <a href="http://localhost:4200/example" class="button">Ingrese Aquí</a>
-                        </div>
-                        <p>Si no solicitaste esta verificación, puedes ignorar este mensaje.</p>
-                        <p>Atentamente,<br>El equipo de [Tu Empresa]</p>
+                        <p>Gracias por registrar la hoja de vida</p>
+                        <p>Atentamente,<br>El equipo de Tecser</p>
                     </div>
                     <div class="footer">
                         <p>Este correo fue enviado automáticamente. Por favor, no respondas a este mensaje.</p>
-                        <p>&copy; 2024 [Tu Empresa]. Todos los derechos reservados.</p>
+                        <p>&copy; 2024 Tecser. Todos los derechos reservados.</p>
                     </div>
                 </div>
                 """;
@@ -219,7 +217,7 @@ public class ResumeService {
         String formattedHtmlContent = String.format(htmlContent, user.getFullName());
     
         // Llamada al método de tu emailService (ajustar aquí para contenido HTML)
-        emailService.sendHtmlEmailAsync(user.getEmail(), subject, formattedHtmlContent);
+        emailService.sendHtmlEmailAsync(user.getEmail(), subject, formattedHtmlContent, imagePath);
     }
     
 }

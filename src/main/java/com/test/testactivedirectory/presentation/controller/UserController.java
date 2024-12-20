@@ -55,4 +55,9 @@ public class UserController extends AbstractController {
         return ResponseEntity.ok(this.userService.findByCargo(cargo));
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getById(@PathVariable Long id) {
+        return ResponseEntity.ok(this.userService.findById(id));
+    }
+
 }

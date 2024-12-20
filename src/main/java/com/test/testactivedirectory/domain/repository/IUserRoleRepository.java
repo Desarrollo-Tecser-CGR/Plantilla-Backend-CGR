@@ -13,4 +13,7 @@ public interface IUserRoleRepository {
 
     public abstract List<UserEntity> findByCargo(String cargo);
 
+    public abstract UserEntity findById(Long id);
+
+
 }

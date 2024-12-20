@@ -77,4 +77,16 @@ public class UserServiceImpl implements UserUseCase {
         return userResponse;
     }
 
+    @Override
+    public UserWithRolesResponseDto findById(Long id) {
+        UserEntity userEntity = userRoleRepository.findById(id);
+        UserWithRolesResponseDto userDto = new UserWithRolesResponseDto();
+        userDto.setIdUser(userEntity.getId());
+        userDto.setUserName(userEntity.getSAMAccountName());
+        userDto.setEmail(userEntity.getEmail());
+        userDto.addRole(userEntity.getRoles());
+    
+        return userDto;
+    }
+
 }
