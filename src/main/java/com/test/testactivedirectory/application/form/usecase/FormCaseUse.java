@@ -6,4 +6,6 @@ public interface FormCaseUse {
 
     public abstract Boolean sendForm(Form form);
 
+    public abstract Object getFilterForm();
+
 }
