@@ -31,7 +31,6 @@ public class EmailService {
     private final TemplateEngine templateEngine;
     private final UserRepositoryJpa userRepositoryJpa;
 
-
     public EmailService(JavaMailSender mailSender, TemplateEngine templateEngine, UserRepositoryJpa userRepositoryJpa) {
         this.mailSender = mailSender;
         this.templateEngine = templateEngine;
@@ -62,26 +61,26 @@ public class EmailService {
         }
     }
 
-    public void sendHtmlEmailAsync(String to, String subject, String htmlBody, String imagePath ) {
+    public void sendHtmlEmailAsync(String to, String subject, String htmlBody, String imagePath) {
         try {
             // Crear un mensaje Mime
             MimeMessage mimeMessage = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
-    
+
             // Configurar el mensaje
             helper.setTo(to);
             helper.setSubject(subject);
             helper.setFrom("desarrollador9tecsersas@gmail.com");
             helper.setText(htmlBody, true); // El segundo parámetro 'true' indica que el contenido es HTML
-    
-               // Adjuntar la imagen al correo con un Content-ID (CID)
+
+            // Adjuntar la imagen al correo con un Content-ID (CID)
             FileSystemResource image = new FileSystemResource(imagePath);
             helper.addInline("logo", image); // 'logo' será el Content-ID
-                
+
             // Enviar el correo
             mailSender.send(mimeMessage);
             System.out.println("Correo HTML enviado a: " + to);
-    
+
         } catch (MailException e) {
             // Manejo de excepciones específicas de correo
             System.err.println("Error enviando el correo HTML: " + e.getMessage());
@@ -96,48 +95,47 @@ public class EmailService {
             e.printStackTrace();
         }
     }
+
     public void sendWithTemplate(List<Long> userIds) {
-    List<UserEntity> recipients = userRepositoryJpa.findByIdIn(userIds);
+        List<UserEntity> recipients = userRepositoryJpa.findByIdIn(userIds);
 
-    // Enviar correo a cada uno de los usuarios
-    recipients.forEach(to -> {
-        Map<String, Object> templateDataSetter = new HashMap<>();
+        // Enviar correo a cada uno de los usuarios
+        recipients.forEach(to -> {
+            Map<String, Object> templateDataSetter = new HashMap<>();
 
-        if (to.getEmail() != null) {
-            templateDataSetter.put("subject", "Validacion hv");
-        templateDataSetter.put("name", to.getSAMAccountName());
-        sendHtml(to.getEmail(),"Validacion hv", templateDataSetter);
-        }
+            if (to.getEmail() != null) {
+                templateDataSetter.put("subject", "Validacion hv");
+                templateDataSetter.put("name", to.getSAMAccountName());
+                sendHtml(to.getEmail(), "Validacion hv", templateDataSetter);
+            }
 
-    });
-}
+        });
+    }
 
     private void sendHtml(String to, String subject, Map<String, Object> templateData) {
-    try {
-        MimeMessage message = mailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+        try {
+            MimeMessage message = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
 
-        // Procesar el template con Thymeleaf
-        Context context = new Context();
-        context.setVariables(templateData);  // Aquí se setean las variables (asegúrate de usar Map<String, Object>)
-        String htmlContent = templateEngine.process("emailTemplateC", context);  // Nombre de la plantilla
+            // Procesar el template con Thymeleaf
+            Context context = new Context();
+            context.setVariables(templateData); // Aquí se setean las variables (asegúrate de usar Map<String, Object>)
+            String htmlContent = templateEngine.process("emailTemplateC", context); // Nombre de la plantilla
 
-        // Configurar el correo
-        helper.setTo(to);
-        helper.setSubject(subject);
-        helper.setFrom("desarrollador9tecsersas@gmail.com");
-        helper.setText(htmlContent, true); 
+            // Configurar el correo
+            helper.setTo(to);
+            helper.setSubject(subject);
+            helper.setFrom("desarrollador9tecsersas@gmail.com");
+            helper.setText(htmlContent, true);
 
-        // Enviar el correo
-        mailSender.send(message);
-        System.out.println("Correo enviado a: " + to);
+            // Enviar el correo
+            mailSender.send(message);
+            System.out.println("Correo enviado a: " + to);
 
-    } catch (MessagingException e) {
-        throw new RuntimeException("Error al construir el correo: " + e.getMessage(), e);
-    } catch (Exception e) {
-        throw new RuntimeException("Error inesperado al enviar correo a " + to + ": " + e.getMessage(), e);
+        } catch (MessagingException e) {
+            throw new RuntimeException("Error al construir el correo: " + e.getMessage(), e);
+        } catch (Exception e) {
+            throw new RuntimeException("Error inesperado al enviar correo a " + to + ": " + e.getMessage(), e);
+        }
     }
-}   
 }
-
-
