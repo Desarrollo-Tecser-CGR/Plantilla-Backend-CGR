@@ -21,4 +21,6 @@ public interface UserRepositoryJpa extends JpaRepository<UserEntity, Long> {
 
     List<UserEntity> findByCargo(String cargo);
 
+    List<UserEntity> findByIdIn(List<Long> ids);
+
 }
