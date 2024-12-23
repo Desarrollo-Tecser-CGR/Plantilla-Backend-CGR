@@ -20,10 +20,11 @@ public class IdentityFilterResponse {
 
     private String nombre;
 
-    private String tipoEstrategiaIdentificacion;
+    // private String tipoEstrategiaIdentificacion;
 
     private String tipoPractica;
 
     private String codigoPractica;
+    private String estadoFlujo;
 
 }
