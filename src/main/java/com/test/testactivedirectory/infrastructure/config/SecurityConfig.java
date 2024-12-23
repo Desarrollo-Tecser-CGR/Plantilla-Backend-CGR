@@ -55,6 +55,7 @@ public class SecurityConfig {
                     auth.requestMatchers("/api/v1/hojadevida//updateIdentity/**").permitAll();
                     auth.requestMatchers("/api/v1/hojadevida/send").permitAll();
                     auth.requestMatchers("/api/v1/hojadevida/guardar").permitAll();
+                    auth.requestMatchers("/api/v1/form/getFilterForm").permitAll();
                     auth.requestMatchers("/api/v1/email/send").permitAll();
                     auth.requestMatchers("/admin/**").hasAnyRole(RoleUtil.ADMIN, RoleUtil.FUNCIONARIO,
                             RoleUtil.Usuario);
