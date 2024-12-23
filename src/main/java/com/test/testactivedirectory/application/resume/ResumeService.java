@@ -165,7 +165,7 @@ public class ResumeService {
     // }
 
     private void sendEmailAsync(UserWithRolesResponseDto user) {
-        String subject = "Confirmación de Correo Electrónico";
+        String subject = "Registro de hoja de vida exitoso";
         String imagePath = "C:\\Users\\sergio.alonso\\OneDrive - AIRES Y TECNOLOGIA SAS\\Escritorio\\Banco Buenas Practicas\\backend-buenasPracticas-CGR\\src\\main\\resources\\img\\logo.png";
     
         // Contenido HTML de la plantilla

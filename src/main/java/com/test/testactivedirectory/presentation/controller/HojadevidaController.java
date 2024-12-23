@@ -44,12 +44,6 @@ public class HojadevidaController extends AbstractController {
 
     @Autowired
     private EmailService emailService;
-    // @PostMapping("guardar")
-    // public ResponseEntity<?> saveHojadevida(@Valid @RequestBody Identity
-    // requesIdentity, BindingResult result) {
-    // return this.processRequest(result, () ->
-    // ResponseEntity.ok(resumeService.registrarHojaDeVida(requesIdentity)));
-    // }
     @PostMapping("/guardar")
     public ResponseEntity<?> saveHojadevida(@Valid @RequestBody Identity requesIdentity, BindingResult result) {
         return this.processRequest(result, () -> ResponseEntity.ok(resumeService.registrarHojaDeVida(requesIdentity)));
@@ -130,12 +124,6 @@ public class HojadevidaController extends AbstractController {
         }
     }
   
-    // @PostMapping("guardar")
-    // public ResponseEntity<?> saveHojadevida(@Valid @RequestBody Identity
-    // requesIdentity, BindingResult result) {
-    // return this.processRequest(result, () ->
-    // ResponseEntity.ok(resumeService.registrarHojaDeVida(requesIdentity)));
-    // }
     // Metodo obtener, falta arreglar para que funciona correctamente
     // @GetMapping("/obtener")
     // public ResponseEntity<?> getHojadevida(@RequestParam("id") Long id) {
