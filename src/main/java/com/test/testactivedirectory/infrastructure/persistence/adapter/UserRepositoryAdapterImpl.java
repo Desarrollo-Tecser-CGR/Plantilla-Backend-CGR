@@ -55,4 +55,10 @@ public class UserRepositoryAdapterImpl implements IUserRoleRepository {
         return this.userRepositoryJpa.findByCargo(cargo);
     }
 
+    @Override
+    public UserEntity findById(Long id) {
+     return userRepositoryJpa.findById(id).orElseThrow(() -> new ResourceNotFoundException(
+        "el usuario con id= " + id + " no existe"));
+    }
+
 }
