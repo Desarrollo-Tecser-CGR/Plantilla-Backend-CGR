@@ -56,7 +56,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             "/getIdentity/**",
             "/api/v1/hojadevida",
             "/api/v1/form",
-            "/api/v1/hojadevida/send",
             "/api/v1/hojadevida/guardar",
             "/api/v1/hojadevida/inbox-bbp",
             "/api/v1/hojadevida/getIdentity",

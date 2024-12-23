@@ -33,7 +33,7 @@ public class EmailController {
         this.emailService = emailService;
     }
 
-    @PostMapping("/send")
+    @PostMapping("/sendId")
     public ResponseEntity<String> send(@RequestBody EmailRequest request) {
         try {
             emailService.sendWithTemplate(request.getRecipients());
