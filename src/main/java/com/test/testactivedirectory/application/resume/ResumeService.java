@@ -18,6 +18,10 @@ import com.test.testactivedirectory.infrastructure.persistence.entity.resumen.Id
 import com.test.testactivedirectory.infrastructure.persistence.repository.HojaDeVida.ResumRepository;
 import com.test.testactivedirectory.infrastructure.utilities.DtoMapper;
 
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import lombok.AllArgsConstructor;
 
 @Service
@@ -25,11 +29,12 @@ import lombok.AllArgsConstructor;
 public class ResumeService {
 
     private final ResumRepository resumRepository;
-
+    private final TemplateEngine templateEngine;
     private final UserUseCase userService;
 
     private final EmailService emailService;
     private final DtoMapper mapper;
+    
 
     public Identity registrarHojaDeVida(Identity hojadevida) {
 
@@ -164,84 +169,21 @@ public class ResumeService {
     //     emailService.sendEmailAsync(user.getEmail(), subject, body);
     // }
 
-    private void sendEmailAsync(UserWithRolesResponseDto user) {
+    public void sendEmailAsync(UserWithRolesResponseDto user) {
+        
         String subject = "Registro de hoja de vida exitoso";
-        String imagePath = "C:\\Users\\sergio.alonso\\OneDrive - AIRES Y TECNOLOGIA SAS\\Escritorio\\Banco Buenas Practicas\\backend-buenasPracticas-CGR\\src\\main\\resources\\img\\logo.png";
+        String imagePath = "src\\main\\resources\\img\\logo.png";
     
-        // Contenido HTML de la plantilla
-        String htmlContent = """
-                <style>
-                    body {
-                        font-family: Arial, sans-serif;
-                        background-color: #f4f4f4;
-                        margin: 0;
-                        padding: 0;
-                    }
-                    .email-container {
-                        max-width: 600px;
-                        margin: 20px auto;
-                        background-color: #ffffff;
-                        border: 1px solid #dddddd;
-                        border-radius: 8px;
-                        padding: 20px;
-                    }
-                    .header {
-                        text-align: center;
-                        padding: 20px 0;
-                        border-bottom: 1px solid #dddddd;
-                    }
-                    .header h1 {
-                        color: #333333;
-                        margin: 0;
-                        font-size: 24px;
-                    }
-                    .content {
-                        padding: 20px;
-                        color: #555555;
-                        font-size: 16px;
-                        line-height: 1.6;
-                    }
-                    .button-container {
-                        text-align: center;
-                        margin: 20px 0;
-                    }
-                    .button {
-                        background-color: #007bff;
-                        color: #ffffff;
-                        padding: 10px 20px;
-                        text-decoration: none;
-                        border-radius: 5px;
-                        font-size: 16px;
-                    }
-                    .footer {
-                        text-align: center;
-                        font-size: 12px;
-                        color: #999999;
-                        padding: 10px;
-                    }
-                </style>
-                <div class="email-container">
-                    <img src="cid:logo" alt="Logo de la empresa" style="width:200px;height:auto;"/>
-                    <div class="header">
-                        <h1>Confirmación de Correo Electrónico</h1>
-                    </div>
-                    <div class="content">
-                        <p>Estimado/a <strong>%s</strong>,</p>
-                        <p>Gracias por registrar la hoja de vida</p>
-                        <p>Atentamente,<br>El equipo de Tecser</p>
-                    </div>
-                    <div class="footer">
-                        <p>Este correo fue enviado automáticamente. Por favor, no respondas a este mensaje.</p>
-                        <p>&copy; 2024 Tecser. Todos los derechos reservados.</p>
-                    </div>
-                </div>
-                """;
+        // Configurar Thymeleaf context con variables dinámicas
+        Context context = new Context();
+        context.setVariable("name", user.getFullName());
+
     
-        // Personalizar la plantilla con el nombre del usuario
-        String formattedHtmlContent = String.format(htmlContent, user.getFullName());
+        // Renderizar el template Thymeleaf
+        String htmlContent = templateEngine.process("emailTemplate", context);
     
-        // Llamada al método de tu emailService (ajustar aquí para contenido HTML)
-        emailService.sendHtmlEmailAsync(user.getEmail(), subject, formattedHtmlContent, imagePath);
+        // Llamar al servicio para enviar el correo
+        emailService.sendHtmlEmailAsync(user.getEmail(), subject, htmlContent, imagePath);
     }
     
 }

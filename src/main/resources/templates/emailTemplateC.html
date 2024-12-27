@@ -1,12 +1,18 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Email de {{subject}}</title>
 </head>
 <body>
     <h1>¡Hola, [[${name}]]!</h1>
-    <p>Gracias por registrarte en nuestro sistema.</p>
-    <p>Este es un mensaje de prueba de nuestro sistema de correo electrónico.</p>
-    <p>Saludos, el equipo de Tecser</p>
-</body>
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background-color: #f4f4f4; padding: 20px; border-radius: 8px;">
+        <div style="text-align: center;">
+            <!-- Mostrar la imagen utilizando un Content-ID -->
+            <img src="cid:logo" alt="Logo de Tecser" style="width: 200px; height: auto;" />
+        </div>
+        <h1 style="color: #333333; text-align: center;">¡Hola, [[${name}]]!</h1>
+        <p style="color: #555555; font-size: 16px;">Este es un mensaje enviado automáticamente, por favor no responder</p>
+        <p style="color: #555555; font-size: 16px;">Saludos,</p>
+        <p style="color: #555555; font-size: 16px; font-weight: bold;">El equipo de Tecser</p>
+    </div>
 </html>
