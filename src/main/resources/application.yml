@@ -12,7 +12,7 @@ spring:
       max-file-size: 10MB
       max-request-size: 10MB
   application:
-    name: testactivedirectory    
+    name: baseapp
   profiles:
     active: dev  # Cambia esto según el entorno: dev, qa, prod
   #Configuración de la base de datos MySQL
@@ -30,6 +30,7 @@ spring:
       enabled: always
   # Configuración de la seguridad de la aplicación
   security:
+    enabled: false
     user:
      name: user
      password: $2a$12$od1exy/dPLCsL3yxbJeFcO/AxDCKyYVBjl/bGB.7GgM3aGOWeWc.q
