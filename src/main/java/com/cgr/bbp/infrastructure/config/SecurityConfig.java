@@ -40,18 +40,24 @@ public class SecurityConfig {
 
                 .authorizeHttpRequests(auth -> {
                     auth.requestMatchers("/auth/**", "/api/v1/auth/**", "/auth**").permitAll();
-                    auth.requestMatchers("/api/v1/role/**").hasAnyAuthority("administrador");
-                    auth.requestMatchers("/api/v1/log/**").hasAnyAuthority("administrador");
-                    auth.requestMatchers("/api/v1/menu/**").hasAnyAuthority("administrador");
-                    auth.requestMatchers("/api/v1/user/**").hasAnyAuthority("administrador");
-                    auth.requestMatchers("/api/v1/hojadevida/**").hasAnyAuthority("administrador");
-                    auth.requestMatchers("/api/v1/form/**").hasAnyAuthority("administrador");
-                    auth.requestMatchers("/api/v1/email/**").hasAnyAuthority("administrador");
+                    auth.requestMatchers("/api/v1/role/**").hasAnyAuthority("administrador", "natural", "evaluador",
+                            "caracterizador", "validador");
+                    auth.requestMatchers("/api/v1/log/**").hasAnyAuthority("administrador", "natural", "evaluador",
+                            "caracterizador", "validador");
+                    auth.requestMatchers("/api/v1/menu/**").hasAnyAuthority("administrador", "natural", "evaluador",
+                            "caracterizador", "validador");
+                    auth.requestMatchers("/api/v1/user/**").hasAnyAuthority("administrador", "natural", "evaluador",
+                            "caracterizador", "validador");
+                    auth.requestMatchers("/api/v1/hojadevida/**").hasAnyAuthority("administrador", "natural",
+                            "evaluador", "caracterizador", "validador");
+                    auth.requestMatchers("/api/v1/form/**").hasAnyAuthority("administrador", "natural", "evaluador",
+                            "caracterizador", "validador");
+                    auth.requestMatchers("/api/v1/email/**").hasAnyAuthority("administrador", "natural", "evaluador",
+                            "caracterizador", "validador");
                     auth.requestMatchers("/admin/**").hasAnyRole(RoleUtil.ADMIN, RoleUtil.FUNCIONARIO,
                             RoleUtil.Usuario);
                     auth.requestMatchers("/user/**").hasAnyRole(RoleUtil.FUNCIONARIO,
                             RoleUtil.ADMIN, RoleUtil.Usuario);
-
 
                     auth.anyRequest().authenticated();
                 });

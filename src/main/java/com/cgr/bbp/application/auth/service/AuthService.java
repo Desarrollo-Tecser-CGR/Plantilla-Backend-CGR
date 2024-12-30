@@ -98,7 +98,11 @@ public class AuthService implements IAuthUseCase {
                         .findBySAMAccountNameWithRoles(userRequest.getSAMAccountName()).get();
                 AuthResponseDto userRequestDto = AuthMapper.INSTANCE.toAuthResponDto(userRequest);
 
-                userRequestDto.setRoles(user.getRoles().stream().map(RoleEntity::getName).toList());
+                List<String> roles = user.getRoles().stream().map(RoleEntity::getName).toList();
+                userRequestDto.setRoles(roles);
+
+                if (!roles.isEmpty())
+                    userRequestDto.setCargo(roles.get(0));
 
                 String token = jwtAuthenticationProvider.createToken(userRequestDto, user.getRoles());
 

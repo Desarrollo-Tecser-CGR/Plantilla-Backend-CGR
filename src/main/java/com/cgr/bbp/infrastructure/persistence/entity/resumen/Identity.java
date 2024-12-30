@@ -45,7 +45,7 @@ public class Identity {
 
     @NotBlank
     @Column(name = "Cargo", length = 255)
-    @Size(min = 1, max = 50)
+    @Size(min = 0, max = 50)
     private String cargo;
 
     @NotBlank
@@ -77,11 +77,11 @@ public class Identity {
     private String nivelBuenaPractica;
 
     @Column(name = "Nombre_Descriptivo_Buena_Practica", length = 255)
-    @Size(min = 1, max = 100)
+    @Size(min = 0, max = 100)
     private String nombreDescriptivoBuenaPractica;
 
     @Column(name = "Proposito_Practica", length = 500)
-    @Size(min = 1, max = 300)
+    @Size(min = 0, max = 300)
     private String propositoPractica;
 
     @Column(name = "Objetivo_Principal_Practica", length = 500)
@@ -91,7 +91,7 @@ public class Identity {
     private String impactoEsperado;
 
     @Column(name = "Metodologia_Usada", length = 500)
-    @Size(min = 1, max = 500)
+    @Size(min = 0, max = 500)
     private String metodologiaUsada;
 
     @Column(name = "Duracion_Implementacion", length = 255)

@@ -20,5 +20,6 @@ public class AuthResponseDto {
     private Boolean isEnable;
     private List<String> roles;
     private List<Menu> menus;
+    private String cargo;
 
 }

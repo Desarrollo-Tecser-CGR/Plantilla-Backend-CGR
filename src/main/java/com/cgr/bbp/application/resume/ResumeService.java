@@ -138,7 +138,7 @@ public class ResumeService {
                             return "Candidata".equalsIgnoreCase(estadoFlujo)
                                     || "validacion".equalsIgnoreCase(estadoFlujo);
                         case "caracterizador":
-                            return "caracterizacion".equalsIgnoreCase(estadoFlujo);
+                            return "caracterizada".equalsIgnoreCase(estadoFlujo);
                         case "evaluador":
                             return "evaluacion".equalsIgnoreCase(estadoFlujo);
                         case "publicador":
