@@ -54,6 +54,8 @@ public class SecurityConfig {
                             "caracterizador", "validador");
                     auth.requestMatchers("/api/v1/email/**").hasAnyAuthority("administrador", "natural", "evaluador",
                             "caracterizador", "validador");
+                    auth.requestMatchers("/api/v1/traceability/**").hasAnyAuthority("administrador", "natural", "evaluador",
+                            "caracterizador", "validador");
                     auth.requestMatchers("/admin/**").hasAnyRole(RoleUtil.ADMIN, RoleUtil.FUNCIONARIO,
                             RoleUtil.Usuario);
                     auth.requestMatchers("/user/**").hasAnyRole(RoleUtil.FUNCIONARIO,
