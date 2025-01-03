@@ -1,4 +1,4 @@
-package com.cgr.bbp.presentation.Traceability;
+package com.cgr.bbp.presentation.controller.Traceability;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

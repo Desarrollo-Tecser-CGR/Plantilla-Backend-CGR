@@ -13,11 +13,28 @@ import org.thymeleaf.context.Context;
 import com.cgr.bbp.application.email.service.EmailService;
 import com.cgr.bbp.application.resume.dto.IdentityFilterRequest;
 import com.cgr.bbp.application.resume.dto.IdentityFilterResponse;
+import com.cgr.bbp.application.resume.dto.IdentityRequestDto;
+import com.cgr.bbp.application.resume.dto.IdentityResponseDto;
 import com.cgr.bbp.application.user.dto.UserWithRolesResponseDto;
 import com.cgr.bbp.application.user.usecase.IUserUseCase;
 import com.cgr.bbp.infrastructure.exception.customException.ResourceNotFoundException;
+import com.cgr.bbp.infrastructure.persistence.entity.Types.LevelGoodPractice;
+import com.cgr.bbp.infrastructure.persistence.entity.Types.ObjectiveMainPractice;
+import com.cgr.bbp.infrastructure.persistence.entity.Types.RecognitionsNationalInternational;
+import com.cgr.bbp.infrastructure.persistence.entity.Types.StagesMethodology;
+import com.cgr.bbp.infrastructure.persistence.entity.Types.SupportReceived;
+import com.cgr.bbp.infrastructure.persistence.entity.Types.TaxonomyEvent;
+import com.cgr.bbp.infrastructure.persistence.entity.Types.TypeMaterialProduced;
+import com.cgr.bbp.infrastructure.persistence.entity.Types.TypePerformance;
+import com.cgr.bbp.infrastructure.persistence.entity.Types.TypePractice;
+import com.cgr.bbp.infrastructure.persistence.entity.Types.TypeStrategyIdentification;
+import com.cgr.bbp.infrastructure.persistence.entity.Types.Typology;
+import com.cgr.bbp.infrastructure.persistence.entity.Types.ControlObject;
+import com.cgr.bbp.infrastructure.persistence.entity.Types.DurationImplementation;
+import com.cgr.bbp.infrastructure.persistence.entity.Types.ExpectedImpact;
 import com.cgr.bbp.infrastructure.persistence.entity.resumen.Identity;
 import com.cgr.bbp.infrastructure.persistence.repository.HojaDeVida.ResumRepository;
+import com.cgr.bbp.infrastructure.persistence.repository.resume.IdentityRespository;
 import com.cgr.bbp.infrastructure.utilities.DtoMapper;
 
 import lombok.AllArgsConstructor;
@@ -29,13 +46,114 @@ public class ResumeService {
     private final ResumRepository resumRepository;
     private final TemplateEngine templateEngine;
     private final IUserUseCase userService;
+    private final IdentityRespository identityRespository;
 
     private final EmailService emailService;
     private final DtoMapper mapper;
 
-    public Identity registrarHojaDeVida(Identity hojadevida) {
+    @Transactional
+    public IdentityResponseDto registrarHojaDeVida(IdentityRequestDto hojadevida) {
 
-        Identity hojadevidaguardada = resumRepository.save(hojadevida);
+        TypeStrategyIdentification typeStrategy = this.identityRespository
+                .findTypeStrategyIdentificationById(hojadevida.getTypeStrategyIdentification())
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "el tipo de estrategia con id=" + hojadevida.getTypeStrategyIdentification() + " no existe"));
+
+        TypePractice typePractice = this.identityRespository
+                .findTypePracticeById(hojadevida.getTypePractice())
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "el tipo de práctica con id=" + hojadevida.getTypeStrategyIdentification() + " no existe"));
+
+        Typology typology = this.identityRespository
+                .findTypologybyId(hojadevida.getTypology())
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "el tipo de Tipologia con id=" + hojadevida.getTypology() + " no existe"));
+
+        LevelGoodPractice levelGoodPractice = this.identityRespository
+                .findlevelGoodPrecticebyId(hojadevida.getLevelGoodPractice())
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "el tipo de LevelGoodPractice con id=" + hojadevida.getLevelGoodPractice() + " no existe"));
+
+        ObjectiveMainPractice objectiveMainPractice = this.identityRespository
+                .findonjectiveMainbyId(hojadevida.getObjectiveMainPractice())
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "el tipo de objetivo con id=" + hojadevida.getObjectiveMainPractice() + " no existe"));
+
+        ExpectedImpact expectedImpact = this.identityRespository
+                .findExpectImpact(hojadevida.getExpectedImpact())
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "el tipo de impacto esperado con id=" + hojadevida.getObjectiveMainPractice() + " no existe"));
+
+        DurationImplementation durationImplementation = this.identityRespository
+                .findDurationImplementation(hojadevida.getDurationImplementation())
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "el tipo de duracion de implementacion  con id=" + hojadevida.getDurationImplementation()
+                                + " no existe"));
+
+        StagesMethodology stagesMethodology = this.identityRespository
+                .findStagesMethodology(hojadevida.getStagesMethodology())
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "el tipo de metodologias  con id=" + hojadevida.getStagesMethodology()
+                                + " no existe"));
+
+        TypeMaterialProduced typeMaterialProduced = this.identityRespository
+                .findTypeMaterialProduced(hojadevida.getTypeMaterialProduced())
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "el tipo de material producido  con id=" + hojadevida.getTypeMaterialProduced()
+                                + " no existe"));
+
+        SupportReceived supportReceived = this.identityRespository
+                .findSupportReceived(hojadevida.getSupportReceived())
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "el tipo de apoyo recibido con id=" + hojadevida.getSupportReceived()
+                                + " no existe"));
+
+        RecognitionsNationalInternational recognitionsNationalInternational = this.identityRespository
+                .findrecognitionsNationalInternational(hojadevida.getRecognitionsNationalInternational())
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "el tipo de reconocimiento nac e int con id="
+                                + hojadevida.getRecognitionsNationalInternational()
+                                + " no existe"));
+
+        ControlObject controlObject = this.identityRespository
+                .findControlObject(hojadevida.getControlObject())
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "el tipo de objeto control con id="
+                                + hojadevida.getControlObject()
+                                + " no existe"));
+
+        TaxonomyEvent taxonomyEvent = this.identityRespository
+                .findTaxonomyEvent(hojadevida.getTaxonomyEvent())
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "el tipo de taxonomia evento con id="
+                                + hojadevida.getTaxonomyEvent()
+                                + " no existe"));
+
+        TypePerformance typePerformance = this.identityRespository
+                .findTypePerformance(hojadevida.getTypePerformance())
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "el tipo de taxonomia evento con id="
+                                + hojadevida.getTypePerformance()
+                                + " no existe"));
+
+        Identity identity = this.mapperIdentityRequestDto(hojadevida);
+
+        identity.setTypeStrategyIdentification(typeStrategy);
+        identity.setTypePractice(typePractice);
+        identity.setTypology(typology);
+        identity.setLevelGoodPractice(levelGoodPractice);
+        identity.setObjectiveMainPractice(objectiveMainPractice);
+        identity.setExpectedImpact(expectedImpact);
+        identity.setDurationImplementation(durationImplementation);
+        identity.setStagesMethodology(stagesMethodology);
+        identity.setTypeMaterialProduced(typeMaterialProduced);
+        identity.setSupportReceived(supportReceived);
+        identity.setRecognitionsNationalInternational(recognitionsNationalInternational);
+        identity.setControlObject(controlObject);
+        identity.setTaxonomyEvent(taxonomyEvent);
+        identity.setTypePerformance(typePerformance);
+
+        Identity hojadevidaguardada = resumRepository.save(identity);
 
         List<UserWithRolesResponseDto> usuarios = this.userService.findByCargo("Validador");
 
@@ -43,8 +161,116 @@ public class ResumeService {
             sendEmailAsync(usuario);
         });
 
-        return hojadevidaguardada;
+        return this.mapperIdentityResponsetDto(hojadevidaguardada);
 
+    }
+
+    private Identity mapperIdentityRequestDto(IdentityRequestDto identityRequestDto) {
+        Identity identity = new Identity();
+        identity.setFechaDiligenciamiento(identityRequestDto.getFechaDiligenciamiento());
+        identity.setNombreEntidad(identityRequestDto.getNombreEntidad());
+        identity.setNombreDependenciaArea(identityRequestDto.getNombreDependenciaArea());
+        identity.setNombre(identityRequestDto.getNombre());
+        identity.setCargo(identityRequestDto.getCargo());
+        identity.setCorreo(identityRequestDto.getCorreo());
+        identity.setContacto(identityRequestDto.getContacto());
+        identity.setCodigoPractica(identityRequestDto.getCodigoPractica());
+        // identity.setTipologia(identityRequestDto.getTipologia());
+        identity.setEstadoFlujo(identityRequestDto.getEstadoFlujo());
+        // identity.setNivelBuenaPractica(identityRequestDto.getNivelBuenaPractica());
+        identity.setNombreDescriptivoBuenaPractica(identityRequestDto.getNombreDescriptivoBuenaPractica());
+        identity.setPropositoPractica(identityRequestDto.getPropositoPractica());
+        // identity.setObjetivoPrincipalPractica(identityRequestDto.getObjetivoPrincipalPractica());
+        // identity.setImpactoEsperado(identityRequestDto.getImpactoEsperado());
+        identity.setMetodologiaUsada(identityRequestDto.getMetodologiaUsada());
+        // identity.setDuracionImplementacion(identityRequestDto.getDuracionImplementacion());
+        // identity.setEtapasMetodologia(identityRequestDto.getEtapasMetodologia());
+        identity.setPeriodoDesarrolloInicio(identityRequestDto.getPeriodoDesarrolloInicio());
+        identity.setPeriodoDesarrolloFin(identityRequestDto.getPeriodoDesarrolloFin());
+        // identity.setTipoMaterialProducido(identityRequestDto.getTipoMaterialProducido());
+        // identity.setApoyoRecibido(identityRequestDto.getApoyoRecibido());
+        // identity.setReconocimientosNacionalesInternacionales(
+        // identityRequestDto.getReconocimientosNacionalesInternacionales());
+        // identity.setObjetoControl(identityRequestDto.getObjetoControl());
+        // identity.setTaxonomiaEvento(identityRequestDto.getTaxonomiaEvento());
+        // identity.setTipoActuacion(identityRequestDto.getTipoActuacion());
+        identity.setDocumentoActuacion(identityRequestDto.getDocumentoActuacion());
+        identity.setDescripcionResultados(identityRequestDto.getDescripcionResultados());
+
+        return identity;
+    }
+
+    private IdentityResponseDto mapperIdentityResponsetDto(Identity identity) {
+        IdentityResponseDto dto = new IdentityResponseDto();
+        dto.setId(identity.getId());
+        dto.setFechaDiligenciamiento(identity.getFechaDiligenciamiento());
+        dto.setNombreEntidad(identity.getNombreEntidad());
+        dto.setNombreDependenciaArea(identity.getNombreDependenciaArea());
+        dto.setNombre(identity.getNombre());
+        dto.setCargo(identity.getCargo());
+        dto.setCorreo(identity.getCorreo());
+        dto.setContacto(identity.getContacto());
+        dto.setTypeStrategyIdentification(
+                identity.getTypeStrategyIdentification() != null
+                        ? identity.getTypeStrategyIdentification().getName()
+                        : null);
+        dto.setTypePractice(
+                identity.getTypePractice() != null ? identity.getTypePractice().getName() : null);
+        dto.setCodigoPractica(identity.getCodigoPractica());
+        dto.setTypology(identity.getTypology() != null ? identity.getTypology().getName() : null);
+        dto.setEstadoFlujo(identity.getEstadoFlujo());
+        dto.setLevelGoodPractice(
+                identity.getLevelGoodPractice() != null
+                        ? identity.getLevelGoodPractice().getName()
+                        : null);
+        dto.setNombreDescriptivoBuenaPractica(identity.getNombreDescriptivoBuenaPractica());
+        dto.setPropositoPractica(identity.getPropositoPractica());
+        dto.setObjectiveMainPractice(
+                identity.getObjectiveMainPractice() != null
+                        ? identity.getObjectiveMainPractice().getName()
+                        : null);
+        dto.setExpectedImpact(
+                identity.getExpectedImpact() != null
+                        ? identity.getExpectedImpact().getName()
+                        : null);
+        dto.setMetodologiaUsada(identity.getMetodologiaUsada());
+        dto.setDurationImplementation(
+                identity.getDurationImplementation() != null
+                        ? identity.getDurationImplementation().getName()
+                        : null);
+        dto.setStagesMethodology(
+                identity.getStagesMethodology() != null
+                        ? identity.getStagesMethodology().getName()
+                        : null);
+        dto.setPeriodoDesarrolloInicio(identity.getPeriodoDesarrolloInicio());
+        dto.setPeriodoDesarrolloFin(identity.getPeriodoDesarrolloFin());
+        dto.setTypeMaterialProduced(
+                identity.getTypeMaterialProduced() != null
+                        ? identity.getTypeMaterialProduced().getName()
+                        : null);
+        dto.setSupportReceived(
+                identity.getSupportReceived() != null
+                        ? identity.getSupportReceived().getName()
+                        : null);
+        dto.setRecognitionsNationalInternational(
+                identity.getRecognitionsNationalInternational() != null
+                        ? identity.getRecognitionsNationalInternational().getName()
+                        : null);
+        dto.setControlObject(
+                identity.getControlObject() != null
+                        ? identity.getControlObject().getName()
+                        : null);
+        dto.setTaxonomyEvent(
+                identity.getTaxonomyEvent() != null
+                        ? identity.getControlObject().getName()
+                        : null);
+        dto.setTypePerformance(
+                identity.getTypePerformance() != null
+                        ? identity.getTypePerformance().getName()
+                        : null);
+        dto.setDocumentoActuacion(identity.getDocumentoActuacion());
+        dto.setDescripcionResultados(identity.getDescripcionResultados());
+        return dto;
     }
 
     @Transactional
@@ -118,16 +344,19 @@ public class ResumeService {
                 .filter(identity -> filter.getNombre() == null ||
                         (identity.getNombre() != null
                                 && identity.getNombre().toLowerCase().contains(filter.getNombre().toLowerCase())))
-                .filter(identity -> filter.getTipoEstrategiaIdentificacion() == null ||
-                        (identity.getTipoEstrategiaIdentificacion() != null
-                                && identity.getTipoEstrategiaIdentificacion().toLowerCase()
-                                        .contains(filter.getTipoEstrategiaIdentificacion().toLowerCase())))
-                .filter(identity -> filter.getTipoPractica() == null ||
-                        (identity.getTipoPractica() != null && identity.getTipoPractica().toLowerCase()
-                                .contains(filter.getTipoPractica().toLowerCase())))
-                .filter(identity -> filter.getCodigoPractica() == null ||
-                        (identity.getCodigoPractica() != null && identity.getCodigoPractica().toLowerCase()
-                                .contains(filter.getCodigoPractica().toLowerCase())))
+                // .filter(identity -> filter.getTipoEstrategiaIdentificacion() == null ||
+                // (identity.getTypeStrategyIdentification() != null
+                // && identity.getTypeStrategyIdentification().getName().toLowerCase()
+                // .contains(filter.getTipoEstrategiaIdentificacion().toLowerCase())))
+                // .filter(identity -> filter.getTipoPractica() == null ||
+                // (identity.getTypePractice() != null &&
+                // identity.getTypePractice().getName().toLowerCase()
+                // .contains(filter.getTipoPractica().toLowerCase())))
+                // .filter(identity -> filter.getCodigoPractica() == null ||
+                // (identity.getCodigoPractica() != null &&
+                // identity.getCodigoPractica().toLowerCase()
+                // .contains(filter.getCodigoPractica().toLowerCase()))
+                // )
                 .filter(identity -> {
                     if (filter.getRol() == null) {
                         return true;

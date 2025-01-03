@@ -24,6 +24,7 @@ import com.cgr.bbp.application.auth.dto.AuthRequestDto;
 import com.cgr.bbp.application.email.service.EmailService;
 import com.cgr.bbp.application.resume.ResumeService;
 import com.cgr.bbp.application.resume.dto.IdentityFilterRequest;
+import com.cgr.bbp.application.resume.dto.IdentityRequestDto;
 import com.cgr.bbp.application.resume.dto.ValidateStatusDto;
 import com.cgr.bbp.application.user.usecase.IUserUseCase;
 import com.cgr.bbp.infrastructure.exception.customException.ResourceNotFoundException;
@@ -46,7 +47,7 @@ public class HojadevidaController extends AbstractController {
     private EmailService emailService;
 
     @PostMapping("/guardar")
-    public ResponseEntity<?> saveHojadevida(@Valid @RequestBody Identity requesIdentity, BindingResult result) {
+    public ResponseEntity<?> saveHojadevida(@Valid @RequestBody IdentityRequestDto requesIdentity, BindingResult result) {
         return this.requestResponse(result, () -> resumeService.registrarHojaDeVida(requesIdentity),
                 "Hoja de vida guardada", HttpStatus.OK,
                 true);
