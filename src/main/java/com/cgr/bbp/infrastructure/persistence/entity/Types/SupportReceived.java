@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.cgr.bbp.infrastructure.persistence.entity.resumen.Identity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.Column;
@@ -29,6 +30,7 @@ public class SupportReceived {
     @Column(name = "name", length = 255, nullable = false)
     private String name;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "supportReceived")
     private List<Identity> identities = new ArrayList<>();
 }

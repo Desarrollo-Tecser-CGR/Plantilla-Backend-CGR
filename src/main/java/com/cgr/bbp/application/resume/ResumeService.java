@@ -15,6 +15,7 @@ import com.cgr.bbp.application.resume.dto.IdentityFilterRequest;
 import com.cgr.bbp.application.resume.dto.IdentityFilterResponse;
 import com.cgr.bbp.application.resume.dto.IdentityRequestDto;
 import com.cgr.bbp.application.resume.dto.IdentityResponseDto;
+import com.cgr.bbp.application.resume.dto.ResumTypeAllResponseDto;
 import com.cgr.bbp.application.user.dto.UserWithRolesResponseDto;
 import com.cgr.bbp.application.user.usecase.IUserUseCase;
 import com.cgr.bbp.infrastructure.exception.customException.ResourceNotFoundException;
@@ -164,6 +165,8 @@ public class ResumeService {
         return this.mapperIdentityResponsetDto(hojadevidaguardada);
 
     }
+
+    
 
     private Identity mapperIdentityRequestDto(IdentityRequestDto identityRequestDto) {
         Identity identity = new Identity();
@@ -410,6 +413,29 @@ public class ResumeService {
 
         // Llamar al servicio para enviar el correo
         emailService.sendHtmlEmailAsync(user.getEmail(), subject, htmlContent, imagePath);
+    }
+
+    @Transactional
+    public ResumTypeAllResponseDto getListResumTypeAll() {
+        ResumTypeAllResponseDto resumTypeAllResponseDto = new ResumTypeAllResponseDto();
+
+        resumTypeAllResponseDto.setControlObjects(this.identityRespository.findAllControlObject());
+        resumTypeAllResponseDto.setDurationImplementations(this.identityRespository.findAllDurationImplementation());
+        resumTypeAllResponseDto.setExpectedImpacts(this.identityRespository.findAllExpectedImpact());
+        resumTypeAllResponseDto.setLevelGoodPractice(this.identityRespository.findAllLevelGoodPractice());
+        resumTypeAllResponseDto.setObjectiveMainPractices(this.identityRespository.findAllObjectiveMainPractice());
+        resumTypeAllResponseDto.setRecognitionsNationalInternationals(this.identityRespository.findAllRecognitionsNationalInternational());
+        resumTypeAllResponseDto.setStagesMethodologys(this.identityRespository.findAllStagesMethodology());
+        resumTypeAllResponseDto.setSupportReceiveds(this.identityRespository.findAllSupportReceived());
+        resumTypeAllResponseDto.setTaxonomyEvents(this.identityRespository.findAllTaxonomyEvent());
+        resumTypeAllResponseDto.setTypeMaterialProduceds(this.identityRespository.findAllTypeMaterialProduced());
+        resumTypeAllResponseDto.setTypePerformances(this.identityRespository.findAllTypePerformance());
+        resumTypeAllResponseDto.setTypePractices(this.identityRespository.findAllTypePractice());
+        resumTypeAllResponseDto.setTypeStrategyIdentifications(this.identityRespository.findAllTypeStrategyIdentification());
+        resumTypeAllResponseDto.setTypologies(this.identityRespository.findAllTypology());
+
+
+        return resumTypeAllResponseDto;
     }
 
 }

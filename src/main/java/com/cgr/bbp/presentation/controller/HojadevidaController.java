@@ -47,7 +47,8 @@ public class HojadevidaController extends AbstractController {
     private EmailService emailService;
 
     @PostMapping("/guardar")
-    public ResponseEntity<?> saveHojadevida(@Valid @RequestBody IdentityRequestDto requesIdentity, BindingResult result) {
+    public ResponseEntity<?> saveHojadevida(@Valid @RequestBody IdentityRequestDto requesIdentity,
+            BindingResult result) {
         return this.requestResponse(result, () -> resumeService.registrarHojaDeVida(requesIdentity),
                 "Hoja de vida guardada", HttpStatus.OK,
                 true);
@@ -127,6 +128,11 @@ public class HojadevidaController extends AbstractController {
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
+    }
+
+    @GetMapping("/getAllTypes")
+    public ResponseEntity<?> getAllResumType() {
+        return requestResponse(this.resumeService.getListResumTypeAll(), "listado de tipos", HttpStatus.OK, true);
     }
 
     // Metodo obtener, falta arreglar para que funciona correctamente
