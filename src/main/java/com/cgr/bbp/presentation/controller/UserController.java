@@ -10,9 +10,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.cgr.bbp.application.user.dto.UserDto;
 import com.cgr.bbp.application.user.dto.UserWithRolesRequestDto;
 import com.cgr.bbp.application.user.usecase.IUserSynchronizerUseCase;
 import com.cgr.bbp.application.user.usecase.IUserUseCase;
+import com.cgr.bbp.infrastructure.persistence.entity.RoleEntity;
+import com.cgr.bbp.infrastructure.persistence.entity.UserEntity;
 
 import jakarta.validation.Valid;
 
@@ -33,6 +36,12 @@ public class UserController extends AbstractController {
     public ResponseEntity<?> getAll() {
         return requestResponse(this.userService.findAll(), "usuarios del sistema", HttpStatus.OK, true);
     }
+
+    @PostMapping("/createUser")
+    public ResponseEntity<?> create(@Valid @RequestBody UserDto user, BindingResult result) {
+        return requestResponse(result, () -> this.userService.create(user), "usuario creado", HttpStatus.CREATED, true);
+    }
+    
 
     @PostMapping
     public ResponseEntity<?> assignRole(@Valid @RequestBody UserWithRolesRequestDto rolesRequestDto,

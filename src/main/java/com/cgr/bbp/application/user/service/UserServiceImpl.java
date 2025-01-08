@@ -1,16 +1,21 @@
 package com.cgr.bbp.application.user.service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.cgr.bbp.application.role.dto.RoleRequestDto;
+import com.cgr.bbp.application.user.dto.UserDto;
 import com.cgr.bbp.application.user.dto.UserWithRolesRequestDto;
 import com.cgr.bbp.application.user.dto.UserWithRolesResponseDto;
 import com.cgr.bbp.application.user.usecase.IUserUseCase;
 import com.cgr.bbp.domain.repository.IUserRoleRepository;
 import com.cgr.bbp.infrastructure.persistence.entity.UserEntity;
+import com.cgr.bbp.infrastructure.persistence.repository.user.IUserRepositoryJpa;
+import com.cgr.bbp.infrastructure.utilities.DtoMapper;
 
 import lombok.AllArgsConstructor;
 
@@ -19,6 +24,10 @@ import lombok.AllArgsConstructor;
 public class UserServiceImpl implements IUserUseCase {
 
     private final IUserRoleRepository userRoleRepository;
+
+    private final IUserRepositoryJpa userRepositoryJpa; 
+
+    private final DtoMapper mapper;
 
     @Transactional(readOnly = true)
     @Override
@@ -93,6 +102,20 @@ public class UserServiceImpl implements IUserUseCase {
         userDto.addRole(userEntity.getRoles());
 
         return userDto;
+    }
+
+    @Override
+    @Transactional
+    public UserDto create(UserDto requestDto) {
+        UserEntity userEntity = mapper.convertToDto(requestDto, UserEntity.class);
+        userEntity.setEnabled(true);
+        userEntity.setDateModify(new Date());
+        userEntity.setCargo("natural");
+
+        userRepositoryJpa.save(userEntity);
+        
+        return requestDto;
+
     }
 
 }
