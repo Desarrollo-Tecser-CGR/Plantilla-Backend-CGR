@@ -1,4 +1,4 @@
-package com.cgr.bbp.infrastructure.utilities;
+package com.cgr.bbp.infrastructure.utilities.helpers;
 
 import java.util.List;
 import java.util.stream.StreamSupport;

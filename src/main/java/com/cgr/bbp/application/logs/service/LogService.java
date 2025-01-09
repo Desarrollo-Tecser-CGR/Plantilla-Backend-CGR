@@ -10,7 +10,7 @@ import com.cgr.bbp.application.logs.dto.LogDto;
 import com.cgr.bbp.application.logs.usecase.ILogUseCase;
 import com.cgr.bbp.domain.repository.ILogRepository;
 import com.cgr.bbp.infrastructure.persistence.entity.LogEntity;
-import com.cgr.bbp.infrastructure.utilities.DtoMapper;
+import com.cgr.bbp.infrastructure.utilities.helpers.DtoMapper;
 
 import lombok.AllArgsConstructor;
 

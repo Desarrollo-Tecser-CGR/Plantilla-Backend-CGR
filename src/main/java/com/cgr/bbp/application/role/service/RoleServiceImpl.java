@@ -9,7 +9,7 @@ import com.cgr.bbp.application.role.dto.RoleRequestDto;
 import com.cgr.bbp.application.role.usecase.IRoleService;
 import com.cgr.bbp.domain.repository.IRoleRepository;
 import com.cgr.bbp.infrastructure.persistence.entity.RoleEntity;
-import com.cgr.bbp.infrastructure.utilities.DtoMapper;
+import com.cgr.bbp.infrastructure.utilities.helpers.DtoMapper;
 
 import lombok.AllArgsConstructor;
 

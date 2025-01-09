@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,7 +16,7 @@ import com.cgr.bbp.application.user.usecase.IUserUseCase;
 import com.cgr.bbp.domain.repository.IUserRoleRepository;
 import com.cgr.bbp.infrastructure.persistence.entity.UserEntity;
 import com.cgr.bbp.infrastructure.persistence.repository.user.IUserRepositoryJpa;
-import com.cgr.bbp.infrastructure.utilities.DtoMapper;
+import com.cgr.bbp.infrastructure.utilities.helpers.DtoMapper;
 
 import lombok.AllArgsConstructor;
 
@@ -28,6 +29,8 @@ public class UserServiceImpl implements IUserUseCase {
     private final IUserRepositoryJpa userRepositoryJpa; 
 
     private final DtoMapper mapper;
+
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional(readOnly = true)
     @Override
@@ -107,15 +110,23 @@ public class UserServiceImpl implements IUserUseCase {
     @Override
     @Transactional
     public UserDto create(UserDto requestDto) {
-        UserEntity userEntity = mapper.convertToDto(requestDto, UserEntity.class);
+
+        UserEntity userEntity = new UserEntity();
+        userEntity.setSAMAccountName(requestDto.getSAMAccountName());
+        userEntity.setFullName(requestDto.getFullName());
+        userEntity.setEmail(requestDto.getEmail());
+        userEntity.setPhone(requestDto.getPhone());
+
         userEntity.setEnabled(true);
         userEntity.setDateModify(new Date());
-        userEntity.setCargo("natural");
+        userEntity.setCargo(null);
+
+        String encryptedPassword = passwordEncoder.encode(requestDto.getPassword());
+        userEntity.setPassword(encryptedPassword);
 
         userRepositoryJpa.save(userEntity);
-        
-        return requestDto;
 
+        return requestDto;
     }
 
 }

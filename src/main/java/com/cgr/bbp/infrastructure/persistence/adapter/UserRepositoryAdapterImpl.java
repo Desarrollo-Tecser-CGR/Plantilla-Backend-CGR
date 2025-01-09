@@ -41,6 +41,9 @@ public class UserRepositoryAdapterImpl implements IUserRoleRepository {
 
         List<RoleEntity> roles = this.roleRepositoryJpa.findByIdIn(requestDto.getRoleIds());
         user.setRoles(roles);
+        if (roles.size() > 0 ) {
+            user.setCargo(roles.stream().findFirst().get().getName());
+        }
         return this.userRepositoryJpa.save(user);
     }
 

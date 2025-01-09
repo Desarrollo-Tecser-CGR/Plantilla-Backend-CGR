@@ -5,12 +5,14 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -128,6 +130,14 @@ public class HojadevidaController extends AbstractController {
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
+    }
+
+    @PatchMapping("updateIdentity/{id}")
+    public ResponseEntity<?> actualizarParcial(
+            @PathVariable Long id,
+            @RequestBody Map<String, Object> actualizaciones) {
+        Boolean response = resumeService.actualizarParcial(id, actualizaciones);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/getAllTypes")

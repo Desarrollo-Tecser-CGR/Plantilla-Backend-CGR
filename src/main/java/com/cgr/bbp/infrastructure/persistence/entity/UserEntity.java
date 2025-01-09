@@ -29,7 +29,7 @@ public class UserEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "sAMAccountName")
+    @Column(name = "sAMAccountName", unique=true)
     private String sAMAccountName;
 
     private String password;
@@ -70,7 +70,6 @@ public class UserEntity {
         this.phone = userAD.getPhone();
         this.enabled = userAD.getEnabled();
         this.dateModify = userAD.getDateModify();
-        this.cargo = userAD.getCargo();
     }
 
 }
