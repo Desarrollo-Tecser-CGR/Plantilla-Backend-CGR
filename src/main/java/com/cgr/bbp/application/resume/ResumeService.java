@@ -104,15 +104,14 @@ public class ResumeService {
                                                                 + " no existe"));
 
                 List<StagesMethodology> stagesMethodology = this.identityRespository
-                                 .findStagesMethodologyByIds(hojadevida.getStagesMethodology());
-                                
+                                .findStagesMethodologyByIds(hojadevida.getStagesMethodology());
 
                 List<TypeMaterialProduced> typeMaterialProduced = this.identityRespository
                                 .findTypeMaterialProducedByIds(hojadevida.getTypeMaterialProduced());
-                                
+
                 List<SupportReceived> supportReceived = this.identityRespository
                                 .findSupportReceivedByIds(hojadevida.getSupportReceived());
-                        
+
                 RecognitionsNationalInternational recognitionsNationalInternational = this.identityRespository
                                 .findrecognitionsNationalInternational(
                                                 hojadevida.getRecognitionsNationalInternational())
@@ -130,7 +129,7 @@ public class ResumeService {
 
                 List<TaxonomyEvent> taxonomyEvent = this.identityRespository
                                 .findTaxonomyEventByIds(hojadevida.getTaxonomyEvent());
-                              
+
                 TypePerformance typePerformance = this.identityRespository
                                 .findTypePerformance(hojadevida.getTypePerformance())
                                 .orElseThrow(() -> new ResourceNotFoundException(
@@ -252,13 +251,13 @@ public class ResumeService {
                 dto.setPeriodoDesarrolloFin(identity.getPeriodoDesarrolloFin());
                 dto.setTypeMaterialProduced(
                                 identity.getTypeMaterialProduced() != null
-                                                ? identity.getTypeMaterialProduced().stream().map(type ->{
+                                                ? identity.getTypeMaterialProduced().stream().map(type -> {
                                                         return type.getName();
                                                 }).toList()
                                                 : null);
                 dto.setSupportReceived(
                                 identity.getSupportReceived() != null
-                                                ? identity.getSupportReceived().stream().map(type ->{
+                                                ? identity.getSupportReceived().stream().map(type -> {
                                                         return type.getName();
                                                 }).toList()
                                                 : null);
@@ -472,9 +471,11 @@ public class ResumeService {
                                 field.setAccessible(true);
 
                                 // Verificar si el campo es una relación
-                                if (IReferenceEntity.class.isAssignableFrom(field.getType())) {
+                                // TODO: esto hay que mejorarlo, para que si valide correctamnte
+                                if (IReferenceEntity.class.isAssignableFrom(field.getType())
+                                                || List.class.isAssignableFrom(field.getType())) {
                                         Object entidadRelacionada = entityResolver.resolve(field.getType(),
-                                                        valor);
+                                                        valor, campo);
                                         ReflectionUtils.setField(field, identidad, entidadRelacionada);
                                 } else {
                                         ReflectionUtils.setField(field, identidad, valor);

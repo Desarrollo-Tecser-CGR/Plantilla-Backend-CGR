@@ -1,5 +1,7 @@
 package com.cgr.bbp.application.resume.Utilities;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -26,7 +28,7 @@ public class ReferencedEntityResolver {
     @Autowired
     private IdentityRespository identityRepository;
 
-    public Object resolve(Class<?> type, Object id) {
+    public Object resolve(Class<?> type, Object id, String campo) {
 
         if (type.equals(TypeStrategyIdentification.class)) {
             return identityRepository.findTypeStrategyIdentificationById((Integer) id)
@@ -73,6 +75,22 @@ public class ReferencedEntityResolver {
         } else if (type.equals(TypePerformance.class)) {
             return identityRepository.findTypePerformance((Integer) id)
                     .orElseThrow(() -> new ResourceNotFoundException("Tipo de rendimiento seleccionado no existe"));
+        } else if (type.equals(List.class)) {
+            switch (campo) {
+                case "expectedImpact":
+                    return identityRepository.findExpectedImpactByIds((List<Long>) id);
+                case "stagesMethodology":
+                    return identityRepository.findStagesMethodologyByIds((List<Long>) id);
+                case "typeMaterialProduced":
+                    return identityRepository.findTypeMaterialProducedByIds((List<Long>) id);
+                case "supportReceived":
+                    return identityRepository.findSupportReceivedByIds((List<Long>) id);
+                case "taxonomyEvent":
+                    return identityRepository.findTaxonomyEventByIds((List<Long>) id);
+                default:
+                    break;
+            }
+
         }
 
         throw new IllegalArgumentException("Tipo de entidad desconocido: " + type.getName());
