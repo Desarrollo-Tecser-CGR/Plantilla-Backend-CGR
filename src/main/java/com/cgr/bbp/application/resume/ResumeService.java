@@ -472,6 +472,7 @@ public class ResumeService {
                 Identity identidad = resumRepository.findById(id)
                                 .orElseThrow(() -> new ResourceNotFoundException(
                                                 "La hoja de vida con id=" + id + " no existe"));
+                                                
 
                 actualizaciones.forEach((campo, valor) -> {
                         Field field = ReflectionUtils.findField(Identity.class, campo);

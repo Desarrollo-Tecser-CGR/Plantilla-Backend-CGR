@@ -136,8 +136,9 @@ public class HojadevidaController extends AbstractController {
     public ResponseEntity<?> actualizarParcial(
             @PathVariable Long id,
             @RequestBody Map<String, Object> actualizaciones) {
-        Boolean response = resumeService.actualizarParcial(id, actualizaciones);
-        return ResponseEntity.ok(response);
+
+        return requestResponse(resumeService.actualizarParcial(id, actualizaciones), "hoja de vida actualizada",
+                HttpStatus.OK, true);
     }
 
     @GetMapping("/getAllTypes")
