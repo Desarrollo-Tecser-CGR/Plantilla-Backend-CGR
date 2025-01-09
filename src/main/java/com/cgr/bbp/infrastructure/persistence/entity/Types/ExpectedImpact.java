@@ -13,6 +13,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
@@ -22,7 +23,7 @@ import lombok.Data;
 @Entity
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Table(name = "expected_impact")
-public class ExpectedImpact implements IReferenceEntity{
+public class ExpectedImpact implements IReferenceEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // Generación automática del ID
     private Integer id;
@@ -32,7 +33,7 @@ public class ExpectedImpact implements IReferenceEntity{
     private String name;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "expectedImpact")
+    @ManyToMany(mappedBy = "expectedImpact")
     private List<Identity> identities = new ArrayList<>();
-    
+
 }

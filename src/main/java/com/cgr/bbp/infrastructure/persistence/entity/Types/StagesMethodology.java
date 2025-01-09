@@ -13,6 +13,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
@@ -31,7 +32,8 @@ public class StagesMethodology implements IReferenceEntity{
     @Column(name = "name", length = 255, nullable = false)
     private String name;
 
+
     @JsonIgnore
-    @OneToMany(mappedBy = "stagesMethodology")
+    @ManyToMany(mappedBy = "stagesMethodology")
     private List<Identity> identities = new ArrayList<>();
 }

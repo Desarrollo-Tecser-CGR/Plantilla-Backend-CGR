@@ -93,12 +93,8 @@ public class ResumeService {
                                                 "el tipo de objetivo con id=" + hojadevida.getObjectiveMainPractice()
                                                                 + " no existe"));
 
-                ExpectedImpact expectedImpact = this.identityRespository
-                                .findExpectImpact(hojadevida.getExpectedImpact())
-                                .orElseThrow(() -> new ResourceNotFoundException(
-                                                "el tipo de impacto esperado con id="
-                                                                + hojadevida.getObjectiveMainPractice()
-                                                                + " no existe"));
+                List<ExpectedImpact> expectedImpact = this.identityRespository
+                                .findExpectedImpactByIds(hojadevida.getExpectedImpact());
 
                 DurationImplementation durationImplementation = this.identityRespository
                                 .findDurationImplementation(hojadevida.getDurationImplementation())
@@ -107,25 +103,16 @@ public class ResumeService {
                                                                 + hojadevida.getDurationImplementation()
                                                                 + " no existe"));
 
-                StagesMethodology stagesMethodology = this.identityRespository
-                                .findStagesMethodology(hojadevida.getStagesMethodology())
-                                .orElseThrow(() -> new ResourceNotFoundException(
-                                                "el tipo de metodologias  con id=" + hojadevida.getStagesMethodology()
-                                                                + " no existe"));
+                List<StagesMethodology> stagesMethodology = this.identityRespository
+                                 .findStagesMethodologyByIds(hojadevida.getStagesMethodology());
+                                
 
-                TypeMaterialProduced typeMaterialProduced = this.identityRespository
-                                .findTypeMaterialProduced(hojadevida.getTypeMaterialProduced())
-                                .orElseThrow(() -> new ResourceNotFoundException(
-                                                "el tipo de material producido  con id="
-                                                                + hojadevida.getTypeMaterialProduced()
-                                                                + " no existe"));
-
-                SupportReceived supportReceived = this.identityRespository
-                                .findSupportReceived(hojadevida.getSupportReceived())
-                                .orElseThrow(() -> new ResourceNotFoundException(
-                                                "el tipo de apoyo recibido con id=" + hojadevida.getSupportReceived()
-                                                                + " no existe"));
-
+                List<TypeMaterialProduced> typeMaterialProduced = this.identityRespository
+                                .findTypeMaterialProducedByIds(hojadevida.getTypeMaterialProduced());
+                                
+                List<SupportReceived> supportReceived = this.identityRespository
+                                .findSupportReceivedByIds(hojadevida.getSupportReceived());
+                        
                 RecognitionsNationalInternational recognitionsNationalInternational = this.identityRespository
                                 .findrecognitionsNationalInternational(
                                                 hojadevida.getRecognitionsNationalInternational())
@@ -141,13 +128,9 @@ public class ResumeService {
                                                                 + hojadevida.getControlObject()
                                                                 + " no existe"));
 
-                TaxonomyEvent taxonomyEvent = this.identityRespository
-                                .findTaxonomyEvent(hojadevida.getTaxonomyEvent())
-                                .orElseThrow(() -> new ResourceNotFoundException(
-                                                "el tipo de taxonomia evento con id="
-                                                                + hojadevida.getTaxonomyEvent()
-                                                                + " no existe"));
-
+                List<TaxonomyEvent> taxonomyEvent = this.identityRespository
+                                .findTaxonomyEventByIds(hojadevida.getTaxonomyEvent());
+                              
                 TypePerformance typePerformance = this.identityRespository
                                 .findTypePerformance(hojadevida.getTypePerformance())
                                 .orElseThrow(() -> new ResourceNotFoundException(
@@ -250,7 +233,9 @@ public class ResumeService {
                                                 : null);
                 dto.setExpectedImpact(
                                 identity.getExpectedImpact() != null
-                                                ? identity.getExpectedImpact().getName()
+                                                ? identity.getExpectedImpact().stream().map(type -> {
+                                                        return type.getName();
+                                                }).toList()
                                                 : null);
                 dto.setMetodologiaUsada(identity.getMetodologiaUsada());
                 dto.setDurationImplementation(
@@ -259,17 +244,23 @@ public class ResumeService {
                                                 : null);
                 dto.setStagesMethodology(
                                 identity.getStagesMethodology() != null
-                                                ? identity.getStagesMethodology().getName()
+                                                ? identity.getStagesMethodology().stream().map(type -> {
+                                                        return type.getName();
+                                                }).toList()
                                                 : null);
                 dto.setPeriodoDesarrolloInicio(identity.getPeriodoDesarrolloInicio());
                 dto.setPeriodoDesarrolloFin(identity.getPeriodoDesarrolloFin());
                 dto.setTypeMaterialProduced(
                                 identity.getTypeMaterialProduced() != null
-                                                ? identity.getTypeMaterialProduced().getName()
+                                                ? identity.getTypeMaterialProduced().stream().map(type ->{
+                                                        return type.getName();
+                                                }).toList()
                                                 : null);
                 dto.setSupportReceived(
                                 identity.getSupportReceived() != null
-                                                ? identity.getSupportReceived().getName()
+                                                ? identity.getSupportReceived().stream().map(type ->{
+                                                        return type.getName();
+                                                }).toList()
                                                 : null);
                 dto.setRecognitionsNationalInternational(
                                 identity.getRecognitionsNationalInternational() != null
@@ -281,7 +272,9 @@ public class ResumeService {
                                                 : null);
                 dto.setTaxonomyEvent(
                                 identity.getTaxonomyEvent() != null
-                                                ? identity.getControlObject().getName()
+                                                ? identity.getTaxonomyEvent().stream().map(type -> {
+                                                        return type.getName();
+                                                }).toList()
                                                 : null);
                 dto.setTypePerformance(
                                 identity.getTypePerformance() != null
@@ -472,7 +465,6 @@ public class ResumeService {
                 Identity identidad = resumRepository.findById(id)
                                 .orElseThrow(() -> new ResourceNotFoundException(
                                                 "La hoja de vida con id=" + id + " no existe"));
-                                                
 
                 actualizaciones.forEach((campo, valor) -> {
                         Field field = ReflectionUtils.findField(Identity.class, campo);

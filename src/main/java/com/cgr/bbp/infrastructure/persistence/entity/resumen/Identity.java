@@ -11,6 +11,7 @@ import lombok.Data;
 
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
 
 import com.cgr.bbp.infrastructure.persistence.entity.Types.ExpectedImpact;
 import com.cgr.bbp.infrastructure.persistence.entity.Types.LevelGoodPractice;
@@ -75,7 +76,7 @@ public class Identity {
     @ManyToOne
     @JoinColumn(name = "Type_strategy_id", nullable = true)
     private TypeStrategyIdentification typeStrategyIdentification;
-    
+
     @ManyToOne
     @JoinColumn(name = "Type_practice_id", nullable = true)
     private TypePractice typePractice;
@@ -106,9 +107,10 @@ public class Identity {
     @JoinColumn(name = "Objective_main_practice_id", nullable = true)
     private ObjectiveMainPractice ObjectiveMainPractice;
 
-    @ManyToOne
-    @JoinColumn(name = "Expected_impact_id", nullable = true)
-    private ExpectedImpact expectedImpact;
+    @ManyToMany
+    @JoinTable(name = "resume_expect_impact", joinColumns = @JoinColumn(name = "resume_id"), inverseJoinColumns = @JoinColumn(name = "expect_id"), uniqueConstraints = {
+            @UniqueConstraint(columnNames = { "resume_id", "expect_id" }) })
+    private List<ExpectedImpact> expectedImpact;
 
     @Column(name = "Metodologia_Usada", length = 500)
     @Size(min = 0, max = 500)
@@ -118,9 +120,10 @@ public class Identity {
     @JoinColumn(name = "Duration_implementation_id", nullable = true)
     private DurationImplementation durationImplementation;
 
-    @ManyToOne
-    @JoinColumn(name = "Stages_methodology_id", nullable = true)
-    private StagesMethodology stagesMethodology;
+    @ManyToMany
+    @JoinTable(name = "resume_stages_methology", joinColumns = @JoinColumn(name = "resume_id"), inverseJoinColumns = @JoinColumn(name = "stages_methology_id"), uniqueConstraints = {
+            @UniqueConstraint(columnNames = { "resume_id", "stages_methology_id" }) })
+    private List<StagesMethodology> stagesMethodology;
 
     @Column(name = "Periodo_Desarrollo_Inicio", length = 255)
     private String periodoDesarrolloInicio;
@@ -128,13 +131,15 @@ public class Identity {
     @Column(name = "Periodo_Desarrollo_Fin", length = 255)
     private String periodoDesarrolloFin;
 
-    @ManyToOne
-    @JoinColumn(name = "Type_material_produced_id", nullable = true)
-    private TypeMaterialProduced typeMaterialProduced;
+    @ManyToMany
+    @JoinTable(name = "resume_material_produced", joinColumns = @JoinColumn(name = "resume_id"), inverseJoinColumns = @JoinColumn(name = "material_produced_id"), uniqueConstraints = {
+        @UniqueConstraint(columnNames = { "resume_id", "material_produced_id" }) })
+    private List<TypeMaterialProduced> typeMaterialProduced;
 
-    @ManyToOne
-    @JoinColumn(name = "Support_received_id", nullable = true)
-    private SupportReceived supportReceived;
+    @ManyToMany
+    @JoinTable(name = "resume_support_received", joinColumns = @JoinColumn(name = "resume_id"), inverseJoinColumns = @JoinColumn(name = "support_received_id"), uniqueConstraints = {
+        @UniqueConstraint(columnNames = { "resume_id", "support_received_id" }) })
+    private List<SupportReceived> supportReceived;
 
     @ManyToOne
     @JoinColumn(name = "Recognitions_national_international_id", nullable = true)
@@ -144,9 +149,10 @@ public class Identity {
     @JoinColumn(name = "Control_object_id", nullable = true)
     private ControlObject controlObject;
 
-    @ManyToOne
-    @JoinColumn(name = "Taxonomy_event_id", nullable = true)
-    private TaxonomyEvent taxonomyEvent;
+    @ManyToMany
+    @JoinTable(name = "resume_taxonomy_event", joinColumns = @JoinColumn(name = "resume_id"), inverseJoinColumns = @JoinColumn(name = "taxonomy_event_id"), uniqueConstraints = {
+        @UniqueConstraint(columnNames = { "resume_id", "taxonomy_event_id" }) })
+    private List<TaxonomyEvent> taxonomyEvent;
 
     @ManyToOne
     @JoinColumn(name = "Type_performance_id", nullable = true)

@@ -1,6 +1,7 @@
 package com.cgr.bbp.application.resume.dto;
 
 import java.util.Date;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -44,27 +45,27 @@ public class IdentityResponseDto {
 
     private String objectiveMainPractice;
 
-    private String expectedImpact;
+    private List<String> expectedImpact;
 
     private String metodologiaUsada;
 
     private String DurationImplementation;
 
-    private String stagesMethodology;
+    private List<String> stagesMethodology;
 
     private String periodoDesarrolloInicio;
 
     private String periodoDesarrolloFin;
 
-    private String typeMaterialProduced;
+    private List<String> typeMaterialProduced;
 
-    private String supportReceived;
+    private List<String> supportReceived;
 
     private String recognitionsNationalInternational;
 
     private String controlObject;
 
-    private String taxonomyEvent;
+    private List<String> taxonomyEvent;
 
     private String typePerformance;
 

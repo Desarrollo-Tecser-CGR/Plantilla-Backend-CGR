@@ -99,7 +99,7 @@ public class SecurityConfig {
                                                 "https://bovid.site/", "https://bovid.site", "http://bovid.site/",
                                                 "http://bovid.site", "https://strong-toffee-1046b5.netlify.app/",
                                                 "https://strong-toffee-1046b5.netlify.app"));
-                                config.setAllowedMethods(Arrays.asList("GET", "POST", "DELETE", "PUT", "OPTIONS"));
+                                config.setAllowedMethods(Arrays.asList("GET", "POST", "DELETE", "PUT", "OPTIONS", "PATCH"));
                                 config.setAllowedHeaders(Arrays.asList("*"));
                                 config.setAllowCredentials(true);
                                 config.setExposedHeaders(Arrays.asList("Authorization", "Content-Disposition"));

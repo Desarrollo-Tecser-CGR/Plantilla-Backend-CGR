@@ -52,6 +52,10 @@ public interface IdentityRespository extends JpaRepository<Identity, Integer> {
         @Query("SELECT ei FROM ExpectedImpact ei WHERE ei.id = :ExpectedImpactId")
         Optional<ExpectedImpact> findExpectImpact(@Param("ExpectedImpactId") Integer ExpectedImpactId);
 
+        // Método para obtener ExpectedImpacts por su IDs
+        @Query("SELECT ei FROM ExpectedImpact ei WHERE ei.id IN :ids")
+        List<ExpectedImpact> findExpectedImpactByIds(@Param("ids") List<Long> ids);
+
         // Método para obtener DurationImplementation por su ID
         @Query("SELECT di FROM DurationImplementation di WHERE di.id = :DurationImplementationId")
         Optional<DurationImplementation> findDurationImplementation(
@@ -61,14 +65,26 @@ public interface IdentityRespository extends JpaRepository<Identity, Integer> {
         @Query("SELECT sm FROM StagesMethodology sm WHERE sm.id = :StagesMethodologyId")
         Optional<StagesMethodology> findStagesMethodology(@Param("StagesMethodologyId") Integer StagesMethodologyId);
 
+        // Método para obtener StagesMethodology por su IDs
+        @Query("SELECT ei FROM StagesMethodology ei WHERE ei.id IN :ids")
+        List<StagesMethodology> findStagesMethodologyByIds(@Param("ids") List<Long> ids);
+
         // Método para obtener TypeMaterialProduced por su ID
         @Query("SELECT tmp FROM TypeMaterialProduced tmp WHERE tmp.id = :TypeMaterialProducedId")
         Optional<TypeMaterialProduced> findTypeMaterialProduced(
                         @Param("TypeMaterialProducedId") Integer TypeMaterialProducedId);
 
+        // Método para obtener TypeMaterialProduced por su IDs
+        @Query("SELECT ei FROM TypeMaterialProduced ei WHERE ei.id IN :ids")
+        List<TypeMaterialProduced> findTypeMaterialProducedByIds(@Param("ids") List<Long> ids);
+
         // Método para obtener SupportReceived por su ID
         @Query("SELECT sr FROM SupportReceived sr WHERE sr.id = :SupportReceivedId")
         Optional<SupportReceived> findSupportReceived(@Param("SupportReceivedId") Integer SupportReceivedId);
+
+        // Método para obtener SupportReceived por su IDs
+        @Query("SELECT ei FROM SupportReceived ei WHERE ei.id IN :ids")
+        List<SupportReceived> findSupportReceivedByIds(@Param("ids") List<Long> ids);
 
         // Método para obtener RecognitionsNationalInternational por su ID
         @Query("SELECT rn FROM RecognitionsNationalInternational rn WHERE rn.id = :RecognitionsNationalInternationalId")
@@ -82,6 +98,10 @@ public interface IdentityRespository extends JpaRepository<Identity, Integer> {
         // Método para obtener TaxonomyEvent por su ID
         @Query("SELECT te FROM TaxonomyEvent te WHERE te.id = :TaxonomyEventId")
         Optional<TaxonomyEvent> findTaxonomyEvent(@Param("TaxonomyEventId") Integer TaxonomyEventId);
+
+        // Método para obtener TaxonomyEvent por su IDs
+        @Query("SELECT ei FROM TaxonomyEvent ei WHERE ei.id IN :ids")
+        List<TaxonomyEvent> findTaxonomyEventByIds(@Param("ids") List<Long> ids);
 
         // Método para obtener TypePerformance por su ID
         @Query("SELECT tp FROM TypePerformance tp WHERE tp.id = :TypePerformanceId")

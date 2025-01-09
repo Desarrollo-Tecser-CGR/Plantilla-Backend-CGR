@@ -1,6 +1,7 @@
 package com.cgr.bbp.application.resume.dto;
 
 import java.util.Date;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -67,14 +68,14 @@ public class IdentityRequestDto {
 
     private Integer objectiveMainPractice;
 
-    private Integer expectedImpact;
+    private List<Long> expectedImpact;
 
     @Size(min = 0, max = 500)
     private String metodologiaUsada;
 
     private Integer DurationImplementation;
 
-    private Integer stagesMethodology;
+    private List<Long> stagesMethodology;
 
     @Size(max = 255)
     private String periodoDesarrolloInicio;
@@ -82,15 +83,15 @@ public class IdentityRequestDto {
     @Size(max = 255)
     private String periodoDesarrolloFin;
 
-    private Integer typeMaterialProduced;
+    private List<Long> typeMaterialProduced;
 
-    private Integer supportReceived;
+    private List<Long> supportReceived;
 
     private Integer recognitionsNationalInternational;
 
     private Integer controlObject;
 
-    private Integer taxonomyEvent;
+    private List<Long> taxonomyEvent;
 
     private Integer typePerformance;
 
