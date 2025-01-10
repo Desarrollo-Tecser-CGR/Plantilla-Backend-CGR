@@ -1,4 +1,4 @@
-package com.cgr.bbp.infrastructure.persistence.entity.Types;
+package com.cgr.bbp.infrastructure.persistence.entity.entityCgr;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,8 +21,8 @@ import lombok.Data;
 @Data
 @Entity
 @JsonIgnoreProperties(ignoreUnknown = true)
-@Table(name = "duration_implementation")
-public class DurationImplementation implements IReferenceEntity{
+@Table(name = "entity_cgr")
+public class EntityCgr implements IReferenceEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // Generación automática del ID
     private Integer id;
@@ -32,6 +32,7 @@ public class DurationImplementation implements IReferenceEntity{
     private String name;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "durationImplementation")
+    @OneToMany(mappedBy = "entityCgr")
     private List<Identity> identities = new ArrayList<>();
+
 }

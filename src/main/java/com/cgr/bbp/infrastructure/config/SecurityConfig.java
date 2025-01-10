@@ -68,6 +68,9 @@ public class SecurityConfig {
                                         auth.requestMatchers("/api/v1/traceability/**").hasAnyAuthority("administrador",
                                                         "natural", "evaluador",
                                                         "caracterizador", "validador");
+                                        auth.requestMatchers("/api/v1/entityCgr/**").hasAnyAuthority("administrador",
+                                                        "natural", "evaluador",
+                                                        "caracterizador", "validador");
                                         auth.requestMatchers("/admin/**").hasAnyRole(RoleUtil.ADMIN,
                                                         RoleUtil.FUNCIONARIO,
                                                         RoleUtil.Usuario);

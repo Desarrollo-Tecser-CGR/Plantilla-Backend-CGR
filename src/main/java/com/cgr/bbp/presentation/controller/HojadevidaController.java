@@ -24,10 +24,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.cgr.bbp.application.auth.dto.AuthRequestDto;
 import com.cgr.bbp.application.email.service.EmailService;
-import com.cgr.bbp.application.resume.ResumeService;
 import com.cgr.bbp.application.resume.dto.IdentityFilterRequest;
 import com.cgr.bbp.application.resume.dto.IdentityRequestDto;
 import com.cgr.bbp.application.resume.dto.ValidateStatusDto;
+import com.cgr.bbp.application.resume.services.ResumeService;
 import com.cgr.bbp.application.user.usecase.IUserUseCase;
 import com.cgr.bbp.infrastructure.exception.customException.ResourceNotFoundException;
 import com.cgr.bbp.infrastructure.persistence.entity.resumen.Identity;
@@ -145,6 +145,8 @@ public class HojadevidaController extends AbstractController {
     public ResponseEntity<?> getAllResumType() {
         return requestResponse(this.resumeService.getListResumTypeAll(), "listado de tipos", HttpStatus.OK, true);
     }
+
+    
 
     // Metodo obtener, falta arreglar para que funciona correctamente
     // @GetMapping("/obtener")

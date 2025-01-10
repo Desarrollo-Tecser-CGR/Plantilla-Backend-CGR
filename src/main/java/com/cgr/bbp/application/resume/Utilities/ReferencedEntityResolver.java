@@ -20,6 +20,7 @@ import com.cgr.bbp.infrastructure.persistence.entity.Types.TypePerformance;
 import com.cgr.bbp.infrastructure.persistence.entity.Types.TypePractice;
 import com.cgr.bbp.infrastructure.persistence.entity.Types.TypeStrategyIdentification;
 import com.cgr.bbp.infrastructure.persistence.entity.Types.Typology;
+import com.cgr.bbp.infrastructure.persistence.entity.entityCgr.EntityCgr;
 import com.cgr.bbp.infrastructure.persistence.repository.resume.IdentityRespository;
 
 @Component
@@ -36,6 +37,9 @@ public class ReferencedEntityResolver {
         } else if (type.equals(TypePractice.class)) {
             return identityRepository.findTypePracticeById((Integer) id)
                     .orElseThrow(() -> new ResourceNotFoundException("Tipo de práctica seleccionada no existe"));
+        } else if (type.equals(EntityCgr.class)) {
+            return identityRepository.findEntityCgrById((Integer) id)
+                    .orElseThrow(() -> new ResourceNotFoundException("Tipo de entidad seleccionada no existe"));
         } else if (type.equals(Typology.class)) {
             return identityRepository.findTypologybyId((Integer) id)
                     .orElseThrow(() -> new ResourceNotFoundException("Tipología seleccionada no existe"));

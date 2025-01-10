@@ -20,9 +20,7 @@ public class IdentityRequestDto {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "America/Bogota")
     private Date fechaDiligenciamiento;
 
-    @NotBlank
-    @Size(max = 255)
-    private String nombreEntidad;
+    private Integer entityCgr;
 
     @NotBlank
     @Size(max = 255)

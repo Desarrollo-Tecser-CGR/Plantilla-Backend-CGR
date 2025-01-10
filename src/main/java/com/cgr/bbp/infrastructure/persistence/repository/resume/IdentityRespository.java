@@ -21,9 +21,15 @@ import com.cgr.bbp.infrastructure.persistence.entity.Types.TypePerformance;
 import com.cgr.bbp.infrastructure.persistence.entity.Types.TypePractice;
 import com.cgr.bbp.infrastructure.persistence.entity.Types.TypeStrategyIdentification;
 import com.cgr.bbp.infrastructure.persistence.entity.Types.Typology;
+import com.cgr.bbp.infrastructure.persistence.entity.entityCgr.EntityCgr;
 import com.cgr.bbp.infrastructure.persistence.entity.resumen.Identity;
 
 public interface IdentityRespository extends JpaRepository<Identity, Integer> {
+
+        // Método para obtener EntityCgr por su ID
+        @Query("SELECT en FROM EntityCgr en WHERE en.id = :EntityCgrId")
+        Optional<EntityCgr> findEntityCgrById(
+                        @Param("EntityCgrId") Integer EntityCgrId);
 
         // Método para obtener TypeStrategyIdentification por su ID
         @Query("SELECT ts FROM TypeStrategyIdentification ts WHERE ts.id = :typeStrategyId")

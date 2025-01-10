@@ -10,6 +10,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -25,6 +26,9 @@ import com.cgr.bbp.infrastructure.persistence.entity.Types.TypePerformance;
 import com.cgr.bbp.infrastructure.persistence.entity.Types.TypePractice;
 import com.cgr.bbp.infrastructure.persistence.entity.Types.TypeStrategyIdentification;
 import com.cgr.bbp.infrastructure.persistence.entity.Types.Typology;
+import com.cgr.bbp.infrastructure.persistence.entity.entityCgr.EntityCgr;
+import com.cgr.bbp.infrastructure.persistence.entity.file.FileEntity;
+import com.cgr.bbp.infrastructure.persistence.entity.LogEntity;
 import com.cgr.bbp.infrastructure.persistence.entity.Types.ControlObject;
 import com.cgr.bbp.infrastructure.persistence.entity.Types.DurationImplementation;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -45,9 +49,10 @@ public class Identity {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "America/Bogota")
     private Date fechaDiligenciamiento;
 
-    @NotBlank
-    @Column(name = "Nombre_Entidad", length = 255, nullable = false)
-    private String nombreEntidad;
+    @ManyToOne
+    @JoinColumn(name = "entity_cgr_id", nullable = true)
+    private EntityCgr entityCgr;
+  
 
     @NotBlank
     @Column(name = "Nombre_Dependencia_Area", length = 255)
@@ -163,5 +168,8 @@ public class Identity {
 
     @Column(name = "Descripcion_Resultados", length = 1000)
     private String descripcionResultados;
+
+    @OneToMany(mappedBy = "identity")
+    private List<FileEntity> files = new ArrayList<>();
 
 }

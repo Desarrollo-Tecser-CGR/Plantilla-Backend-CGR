@@ -15,7 +15,7 @@ public class IdentityResponseDto {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "America/Bogota")
     private Date fechaDiligenciamiento;
 
-    private String nombreEntidad;
+    private String entityCgr;
 
     private String nombreDependenciaArea;
 

@@ -1,4 +1,4 @@
-package com.cgr.bbp.application.resume;
+package com.cgr.bbp.application.resume.services;
 
 import java.lang.reflect.Field;
 import java.util.List;
@@ -35,6 +35,7 @@ import com.cgr.bbp.infrastructure.persistence.entity.Types.TypePerformance;
 import com.cgr.bbp.infrastructure.persistence.entity.Types.TypePractice;
 import com.cgr.bbp.infrastructure.persistence.entity.Types.TypeStrategyIdentification;
 import com.cgr.bbp.infrastructure.persistence.entity.Types.Typology;
+import com.cgr.bbp.infrastructure.persistence.entity.entityCgr.EntityCgr;
 import com.cgr.bbp.infrastructure.persistence.entity.Types.ControlObject;
 import com.cgr.bbp.infrastructure.persistence.entity.Types.DurationImplementation;
 import com.cgr.bbp.infrastructure.persistence.entity.Types.ExpectedImpact;
@@ -66,6 +67,13 @@ public class ResumeService {
                                 .orElseThrow(() -> new ResourceNotFoundException(
                                                 "el tipo de estrategia con id="
                                                                 + hojadevida.getTypeStrategyIdentification()
+                                                                + " no existe"));
+
+                EntityCgr entityCgr = this.identityRespository
+                                .findEntityCgrById(hojadevida.getEntityCgr())
+                                .orElseThrow(() -> new ResourceNotFoundException(
+                                                "el tipo de EntityCgr con id="
+                                                                + hojadevida.getEntityCgr()
                                                                 + " no existe"));
 
                 TypePractice typePractice = this.identityRespository
@@ -140,6 +148,7 @@ public class ResumeService {
                 Identity identity = this.mapperIdentityRequestDto(hojadevida);
 
                 identity.setTypeStrategyIdentification(typeStrategy);
+                identity.setEntityCgr(entityCgr);
                 identity.setTypePractice(typePractice);
                 identity.setTypology(typology);
                 identity.setLevelGoodPractice(levelGoodPractice);
@@ -169,7 +178,7 @@ public class ResumeService {
         private Identity mapperIdentityRequestDto(IdentityRequestDto identityRequestDto) {
                 Identity identity = new Identity();
                 identity.setFechaDiligenciamiento(identityRequestDto.getFechaDiligenciamiento());
-                identity.setNombreEntidad(identityRequestDto.getNombreEntidad());
+                // identity.setEntityCgr(identityRequestDto.getEntityCgr());
                 identity.setNombreDependenciaArea(identityRequestDto.getNombreDependenciaArea());
                 identity.setNombre(identityRequestDto.getNombre());
                 identity.setCargo(identityRequestDto.getCargo());
@@ -205,7 +214,10 @@ public class ResumeService {
                 IdentityResponseDto dto = new IdentityResponseDto();
                 dto.setId(identity.getId());
                 dto.setFechaDiligenciamiento(identity.getFechaDiligenciamiento());
-                dto.setNombreEntidad(identity.getNombreEntidad());
+                dto.setEntityCgr(
+                                identity.getEntityCgr() != null
+                                                ? identity.getEntityCgr().getName()
+                                                : null);
                 dto.setNombreDependenciaArea(identity.getNombreDependenciaArea());
                 dto.setNombre(identity.getNombre());
                 dto.setCargo(identity.getCargo());
@@ -354,11 +366,11 @@ public class ResumeService {
                                                 (identity.getFechaDiligenciamiento() != null &&
                                                                 !identity.getFechaDiligenciamiento().after(filter
                                                                                 .getFechaDiligenciamientoFinal())))
-                                .filter(identity -> filter.getNombreEntidad() == null ||
-                                                (identity.getNombreEntidad() != null
-                                                                && identity.getNombreEntidad().toLowerCase()
-                                                                                .contains(filter.getNombreEntidad()
-                                                                                                .toLowerCase())))
+                                // .filter(identity -> filter.getEntityCgr() == null ||
+                                //                 (identity.getEntityCgr() != null
+                                //                                 && identity.getEntityCgr().getName().toLowerCase()
+                                //                                                 .contains(filter.getEntityCgr()
+                                //                                                                 .toLowerCase())))
                                 .filter(identity -> filter.getNombre() == null ||
                                                 (identity.getNombre() != null
                                                                 && identity.getNombre().toLowerCase().contains(
