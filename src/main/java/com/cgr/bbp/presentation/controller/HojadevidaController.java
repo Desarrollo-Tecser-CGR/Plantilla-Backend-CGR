@@ -5,11 +5,14 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -18,6 +21,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -27,6 +31,7 @@ import com.cgr.bbp.application.email.service.EmailService;
 import com.cgr.bbp.application.resume.dto.IdentityFilterRequest;
 import com.cgr.bbp.application.resume.dto.IdentityRequestDto;
 import com.cgr.bbp.application.resume.dto.ValidateStatusDto;
+import com.cgr.bbp.application.resume.services.FileService;
 import com.cgr.bbp.application.resume.services.ResumeService;
 import com.cgr.bbp.application.user.usecase.IUserUseCase;
 import com.cgr.bbp.infrastructure.exception.customException.ResourceNotFoundException;
@@ -42,6 +47,9 @@ public class HojadevidaController extends AbstractController {
 
     @Autowired
     private ResumeService resumeService;
+
+    @Autowired
+    private FileService fileService;
     private IUserUseCase userService;
     private UserController userController;
 
@@ -57,23 +65,28 @@ public class HojadevidaController extends AbstractController {
     }
 
     @PostMapping("/cargar-archivo")
-    public ResponseEntity<?> cargarArchivo(@RequestPart(value = "file", required = false) MultipartFile file) {
+    public ResponseEntity<?> cargarArchivos(
+            @RequestPart(value = "files", required = false) List<MultipartFile> files,
+            @RequestParam(value = "identityId") Integer identityId) {
         try {
-            if (file != null && !file.isEmpty()) {
-                // Guardar el archivo
-                String fileName = saveFile(file);
-                return ResponseEntity.ok("Archivo cargado exitosamente: " + fileName);
-            } else {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No se proporcionó un archivo.");
+            // Verificar si existe la identidad
+            Identity identity = resumeService.getIdentityById(identityId.longValue());
+
+            if (files == null || files.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No se proporcionaron archivos.");
             }
+
+            // Guardar archivos usando el servicio
+            List<String> fileNames = fileService.saveFiles(files, identity);
+
+            return ResponseEntity.ok("Archivos cargados exitosamente: " + String.join(", ", fileNames));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Error al guardar el archivo: " + e.getMessage());
+                    .body("Error al guardar los archivos: " + e.getMessage());
         }
     }
 
     // Método para guardar el archivo en la carpeta
-
     private String saveFile(MultipartFile file) throws IOException {
         // Define la ruta de la carpeta donde deseas guardar los archivos
         String directoryPath = "C:/mi-carpeta-de-archivos/";
@@ -145,8 +158,6 @@ public class HojadevidaController extends AbstractController {
     public ResponseEntity<?> getAllResumType() {
         return requestResponse(this.resumeService.getListResumTypeAll(), "listado de tipos", HttpStatus.OK, true);
     }
-
-    
 
     // Metodo obtener, falta arreglar para que funciona correctamente
     // @GetMapping("/obtener")
