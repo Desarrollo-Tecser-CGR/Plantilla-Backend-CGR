@@ -45,31 +45,31 @@ public class SecurityConfig {
                                         auth.requestMatchers("/auth/**", "/api/v1/auth/**", "/auth**").permitAll();
                                         auth.requestMatchers(HttpMethod.POST,"/api/v1/user/createUser").permitAll();
                                         auth.requestMatchers("/api/v1/role/**").hasAnyAuthority("administrador",
-                                                        "natural", "evaluador",
+                                                        "registro", "evaluador",
                                                         "caracterizador", "validador");
                                         auth.requestMatchers("/api/v1/log/**").hasAnyAuthority("administrador",
-                                                        "natural", "evaluador",
+                                                        "registro", "evaluador",
                                                         "caracterizador", "validador");
                                         auth.requestMatchers("/api/v1/menu/**").hasAnyAuthority("administrador",
-                                                        "natural", "evaluador",
+                                                        "registro", "evaluador",
                                                         "caracterizador", "validador");
                                         auth.requestMatchers("/api/v1/user/**").hasAnyAuthority("administrador",
-                                                        "natural", "evaluador",
+                                                        "registro", "evaluador",
                                                         "caracterizador", "validador");
                                         auth.requestMatchers("/api/v1/hojadevida/**").hasAnyAuthority("administrador",
-                                                        "natural",
+                                                        "registro",
                                                         "evaluador", "caracterizador", "validador");
                                         auth.requestMatchers("/api/v1/form/**").hasAnyAuthority("administrador",
-                                                        "natural", "evaluador",
+                                                        "registro", "evaluador",
                                                         "caracterizador", "validador");
                                         auth.requestMatchers("/api/v1/email/**").hasAnyAuthority("administrador",
-                                                        "natural", "evaluador",
+                                                        "registro", "evaluador",
                                                         "caracterizador", "validador");
                                         auth.requestMatchers("/api/v1/traceability/**").hasAnyAuthority("administrador",
-                                                        "natural", "evaluador",
+                                                        "registro", "evaluador",
                                                         "caracterizador", "validador");
                                         auth.requestMatchers("/api/v1/entityCgr/**").hasAnyAuthority("administrador",
-                                                        "natural", "evaluador",
+                                                        "registro", "evaluador",
                                                         "caracterizador", "validador");
                                         auth.requestMatchers("/admin/**").hasAnyRole(RoleUtil.ADMIN,
                                                         RoleUtil.FUNCIONARIO,

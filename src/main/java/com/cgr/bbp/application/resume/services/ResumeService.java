@@ -1,6 +1,7 @@
 package com.cgr.bbp.application.resume.services;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -62,91 +63,138 @@ public class ResumeService {
         @Transactional
         public IdentityResponseDto registrarHojaDeVida(IdentityRequestDto hojadevida) {
 
-                TypeStrategyIdentification typeStrategy = this.identityRespository
-                                .findTypeStrategyIdentificationById(hojadevida.getTypeStrategyIdentification())
-                                .orElseThrow(() -> new ResourceNotFoundException(
-                                                "el tipo de estrategia con id="
-                                                                + hojadevida.getTypeStrategyIdentification()
-                                                                + " no existe"));
+                TypeStrategyIdentification typeStrategy = null;
+                if (hojadevida.getTypeStrategyIdentification() != null) {
+                        typeStrategy = this.identityRespository
+                                        .findTypeStrategyIdentificationById(hojadevida.getTypeStrategyIdentification())
+                                        .orElseThrow(() -> new ResourceNotFoundException(
+                                                        "El tipo de estrategia con id="
+                                                                        + hojadevida.getTypeStrategyIdentification()
+                                                                        + " no existe"));
+                }
 
-                EntityCgr entityCgr = this.identityRespository
-                                .findEntityCgrById(hojadevida.getEntityCgr())
-                                .orElseThrow(() -> new ResourceNotFoundException(
-                                                "el tipo de EntityCgr con id="
-                                                                + hojadevida.getEntityCgr()
-                                                                + " no existe"));
+                EntityCgr entityCgr = null;
+                if (hojadevida.getEntityCgr() != null) {
+                        entityCgr = this.identityRespository
+                                        .findEntityCgrById(hojadevida.getEntityCgr())
+                                        .orElseThrow(() -> new ResourceNotFoundException(
+                                                        "El tipo de EntityCgr con id=" + hojadevida.getEntityCgr()
+                                                                        + " no existe"));
+                }
 
-                TypePractice typePractice = this.identityRespository
-                                .findTypePracticeById(hojadevida.getTypePractice())
-                                .orElseThrow(() -> new ResourceNotFoundException(
-                                                "el tipo de práctica con id="
-                                                                + hojadevida.getTypeStrategyIdentification()
-                                                                + " no existe"));
+                TypePractice typePractice = null;
+                if (hojadevida.getTypePractice() != null) {
+                        typePractice = this.identityRespository
+                                        .findTypePracticeById(hojadevida.getTypePractice())
+                                        .orElseThrow(() -> new ResourceNotFoundException(
+                                                        "El tipo de práctica con id=" + hojadevida.getTypePractice()
+                                                                        + " no existe"));
+                }
 
-                Typology typology = this.identityRespository
-                                .findTypologybyId(hojadevida.getTypology())
-                                .orElseThrow(() -> new ResourceNotFoundException(
-                                                "el tipo de Tipologia con id=" + hojadevida.getTypology()
-                                                                + " no existe"));
+                Typology typology = null;
+                if (hojadevida.getTypology() != null) {
+                        typology = this.identityRespository
+                                        .findTypologybyId(hojadevida.getTypology())
+                                        .orElseThrow(() -> new ResourceNotFoundException(
+                                                        "El tipo de Tipologia con id=" + hojadevida.getTypology()
+                                                                        + " no existe"));
+                }
 
-                LevelGoodPractice levelGoodPractice = this.identityRespository
-                                .findlevelGoodPrecticebyId(hojadevida.getLevelGoodPractice())
-                                .orElseThrow(() -> new ResourceNotFoundException(
-                                                "el tipo de LevelGoodPractice con id="
-                                                                + hojadevida.getLevelGoodPractice() + " no existe"));
+                LevelGoodPractice levelGoodPractice = null;
+                if (hojadevida.getLevelGoodPractice() != null) {
+                        levelGoodPractice = this.identityRespository
+                                        .findlevelGoodPrecticebyId(hojadevida.getLevelGoodPractice())
+                                        .orElseThrow(() -> new ResourceNotFoundException(
+                                                        "El tipo de LevelGoodPractice con id="
+                                                                        + hojadevida.getLevelGoodPractice()
+                                                                        + " no existe"));
+                }
 
-                ObjectiveMainPractice objectiveMainPractice = this.identityRespository
-                                .findonjectiveMainbyId(hojadevida.getObjectiveMainPractice())
-                                .orElseThrow(() -> new ResourceNotFoundException(
-                                                "el tipo de objetivo con id=" + hojadevida.getObjectiveMainPractice()
-                                                                + " no existe"));
+                ObjectiveMainPractice objectiveMainPractice = null;
+                if (hojadevida.getObjectiveMainPractice() != null) {
+                        objectiveMainPractice = this.identityRespository
+                                        .findonjectiveMainbyId(hojadevida.getObjectiveMainPractice())
+                                        .orElseThrow(() -> new ResourceNotFoundException(
+                                                        "El tipo de objetivo con id="
+                                                                        + hojadevida.getObjectiveMainPractice()
+                                                                        + " no existe"));
+                }
 
-                List<ExpectedImpact> expectedImpact = this.identityRespository
-                                .findExpectedImpactByIds(hojadevida.getExpectedImpact());
+                List<ExpectedImpact> expectedImpact = new ArrayList<>();
+                if (hojadevida.getExpectedImpact() != null && !hojadevida.getExpectedImpact().isEmpty()) {
+                        expectedImpact = this.identityRespository
+                                        .findExpectedImpactByIds(hojadevida.getExpectedImpact());
+                }
 
-                DurationImplementation durationImplementation = this.identityRespository
-                                .findDurationImplementation(hojadevida.getDurationImplementation())
-                                .orElseThrow(() -> new ResourceNotFoundException(
-                                                "el tipo de duracion de implementacion  con id="
-                                                                + hojadevida.getDurationImplementation()
-                                                                + " no existe"));
+                DurationImplementation durationImplementation = null;
+                if (hojadevida.getDurationImplementation() != null) {
+                        durationImplementation = this.identityRespository
+                                        .findDurationImplementation(hojadevida.getDurationImplementation())
+                                        .orElseThrow(() -> new ResourceNotFoundException(
+                                                        "El tipo de duración de implementación con id="
+                                                                        + hojadevida.getDurationImplementation()
+                                                                        + " no existe"));
+                }
 
-                List<StagesMethodology> stagesMethodology = this.identityRespository
-                                .findStagesMethodologyByIds(hojadevida.getStagesMethodology());
+                List<StagesMethodology> stagesMethodology = new ArrayList<>();
+                if (hojadevida.getStagesMethodology() != null && !hojadevida.getStagesMethodology().isEmpty()) {
+                        stagesMethodology = this.identityRespository
+                                        .findStagesMethodologyByIds(hojadevida.getStagesMethodology());
+                }
 
-                List<TypeMaterialProduced> typeMaterialProduced = this.identityRespository
-                                .findTypeMaterialProducedByIds(hojadevida.getTypeMaterialProduced());
+                List<TypeMaterialProduced> typeMaterialProduced = new ArrayList<>();
+                if (hojadevida.getTypeMaterialProduced() != null && !hojadevida.getTypeMaterialProduced().isEmpty()) {
+                        typeMaterialProduced = this.identityRespository
+                                        .findTypeMaterialProducedByIds(hojadevida.getTypeMaterialProduced());
+                }
 
-                List<SupportReceived> supportReceived = this.identityRespository
-                                .findSupportReceivedByIds(hojadevida.getSupportReceived());
+                List<SupportReceived> supportReceived = new ArrayList<>();
+                if (hojadevida.getSupportReceived() != null && !hojadevida.getSupportReceived().isEmpty()) {
+                        supportReceived = this.identityRespository
+                                        .findSupportReceivedByIds(hojadevida.getSupportReceived());
+                }
 
-                RecognitionsNationalInternational recognitionsNationalInternational = this.identityRespository
-                                .findrecognitionsNationalInternational(
-                                                hojadevida.getRecognitionsNationalInternational())
-                                .orElseThrow(() -> new ResourceNotFoundException(
-                                                "el tipo de reconocimiento nac e int con id="
-                                                                + hojadevida.getRecognitionsNationalInternational()
-                                                                + " no existe"));
+                RecognitionsNationalInternational recognitionsNationalInternational = null;
+                if (hojadevida.getRecognitionsNationalInternational() != null) {
+                        recognitionsNationalInternational = this.identityRespository
+                                        .findrecognitionsNationalInternational(
+                                                        hojadevida.getRecognitionsNationalInternational())
+                                        .orElseThrow(() -> new ResourceNotFoundException(
+                                                        "El tipo de reconocimiento nac e int con id=" + hojadevida
+                                                                        .getRecognitionsNationalInternational()
+                                                                        + " no existe"));
+                }
 
-                ControlObject controlObject = this.identityRespository
-                                .findControlObject(hojadevida.getControlObject())
-                                .orElseThrow(() -> new ResourceNotFoundException(
-                                                "el tipo de objeto control con id="
-                                                                + hojadevida.getControlObject()
-                                                                + " no existe"));
+                ControlObject controlObject = null;
+                if (hojadevida.getControlObject() != null) {
+                        controlObject = this.identityRespository
+                                        .findControlObject(hojadevida.getControlObject())
+                                        .orElseThrow(() -> new ResourceNotFoundException(
+                                                        "El tipo de objeto control con id="
+                                                                        + hojadevida.getControlObject()
+                                                                        + " no existe"));
+                }
 
-                List<TaxonomyEvent> taxonomyEvent = this.identityRespository
-                                .findTaxonomyEventByIds(hojadevida.getTaxonomyEvent());
+                List<TaxonomyEvent> taxonomyEvent = new ArrayList<>();
+                if (hojadevida.getTaxonomyEvent() != null && !hojadevida.getTaxonomyEvent().isEmpty()) {
+                        taxonomyEvent = this.identityRespository
+                                        .findTaxonomyEventByIds(hojadevida.getTaxonomyEvent());
+                }
 
-                TypePerformance typePerformance = this.identityRespository
-                                .findTypePerformance(hojadevida.getTypePerformance())
-                                .orElseThrow(() -> new ResourceNotFoundException(
-                                                "el tipo de taxonomia evento con id="
-                                                                + hojadevida.getTypePerformance()
-                                                                + " no existe"));
+                TypePerformance typePerformance = null;
+                if (hojadevida.getTypePerformance() != null) {
+                        typePerformance = this.identityRespository
+                                        .findTypePerformance(hojadevida.getTypePerformance())
+                                        .orElseThrow(() -> new ResourceNotFoundException(
+                                                        "El tipo de performance con id="
+                                                                        + hojadevida.getTypePerformance()
+                                                                        + " no existe"));
+                }
 
+                // Mapear los datos de la solicitud
                 Identity identity = this.mapperIdentityRequestDto(hojadevida);
 
+                // Asignar los valores a la entidad
                 identity.setTypeStrategyIdentification(typeStrategy);
                 identity.setEntityCgr(entityCgr);
                 identity.setTypePractice(typePractice);
@@ -163,16 +211,17 @@ public class ResumeService {
                 identity.setTaxonomyEvent(taxonomyEvent);
                 identity.setTypePerformance(typePerformance);
 
+                // Guardar la entidad
                 Identity hojadevidaguardada = resumRepository.save(identity);
 
+                // Enviar emails a los validadores
                 List<UserWithRolesResponseDto> usuarios = this.userService.findByCargo("Validador");
-
                 usuarios.forEach(usuario -> {
                         sendEmailAsync(usuario);
                 });
 
+                // Retornar la respuesta
                 return this.mapperIdentityResponsetDto(hojadevidaguardada);
-
         }
 
         private Identity mapperIdentityRequestDto(IdentityRequestDto identityRequestDto) {
@@ -367,10 +416,10 @@ public class ResumeService {
                                                                 !identity.getFechaDiligenciamiento().after(filter
                                                                                 .getFechaDiligenciamientoFinal())))
                                 // .filter(identity -> filter.getEntityCgr() == null ||
-                                //                 (identity.getEntityCgr() != null
-                                //                                 && identity.getEntityCgr().getName().toLowerCase()
-                                //                                                 .contains(filter.getEntityCgr()
-                                //                                                                 .toLowerCase())))
+                                // (identity.getEntityCgr() != null
+                                // && identity.getEntityCgr().getName().toLowerCase()
+                                // .contains(filter.getEntityCgr()
+                                // .toLowerCase())))
                                 .filter(identity -> filter.getNombre() == null ||
                                                 (identity.getNombre() != null
                                                                 && identity.getNombre().toLowerCase().contains(

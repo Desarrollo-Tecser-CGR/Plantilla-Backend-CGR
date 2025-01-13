@@ -50,7 +50,6 @@ public class IdentityRequestDto {
     @Size(max = 255)
     private String codigoPractica;
 
-    @NotNull
     private Integer typology;
 
     @Size(max = 255)

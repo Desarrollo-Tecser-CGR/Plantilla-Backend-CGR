@@ -5,7 +5,6 @@ server:
 
 # Configuracion  de  la aplicacion  
 spring:
-
   servlet:
     multipart:
       enabled: true
@@ -56,5 +55,4 @@ logging:
   level:
        "[org.hibernate.SQL]": debug
 
-  
     

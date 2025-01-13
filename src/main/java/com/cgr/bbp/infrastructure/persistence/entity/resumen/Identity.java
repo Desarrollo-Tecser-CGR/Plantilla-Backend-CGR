@@ -49,10 +49,9 @@ public class Identity {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "America/Bogota")
     private Date fechaDiligenciamiento;
 
-    @ManyToOne
+    @ManyToOne(optional = true)
     @JoinColumn(name = "entity_cgr_id", nullable = true)
     private EntityCgr entityCgr;
-  
 
     @NotBlank
     @Column(name = "Nombre_Dependencia_Area", length = 255)
@@ -170,6 +169,7 @@ public class Identity {
     private String descripcionResultados;
 
     @OneToMany(mappedBy = "identity")
-    private List<FileEntity> files = new ArrayList<>();
+    private List<FileEntity> files;
 
+    // private List<TraceabilityEntity> 
 }
