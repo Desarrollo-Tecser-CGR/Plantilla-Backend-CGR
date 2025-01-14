@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.cgr.bbp.infrastructure.persistence.entity.Traceability.TraceabilityEntity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -29,7 +30,7 @@ public class UserEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "sAMAccountName", unique=true)
+    @Column(name = "sAMAccountName", unique = true)
     private String sAMAccountName;
 
     private String password;
@@ -58,6 +59,9 @@ public class UserEntity {
 
     @OneToMany(mappedBy = "user")
     private List<LogEntity> logs = new ArrayList<>();
+
+    @OneToMany(mappedBy = "userEntity")
+    private List<TraceabilityEntity> traceabilies;
 
     public void addRol(RoleEntity roleEntity) {
         this.roles.add(roleEntity);

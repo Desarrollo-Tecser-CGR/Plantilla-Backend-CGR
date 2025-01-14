@@ -28,7 +28,9 @@ import com.cgr.bbp.infrastructure.persistence.entity.Types.TypeStrategyIdentific
 import com.cgr.bbp.infrastructure.persistence.entity.Types.Typology;
 import com.cgr.bbp.infrastructure.persistence.entity.entityCgr.EntityCgr;
 import com.cgr.bbp.infrastructure.persistence.entity.file.FileEntity;
+import com.cgr.bbp.infrastructure.persistence.entity.flowState.FlowStateEntity;
 import com.cgr.bbp.infrastructure.persistence.entity.LogEntity;
+import com.cgr.bbp.infrastructure.persistence.entity.Traceability.TraceabilityEntity;
 import com.cgr.bbp.infrastructure.persistence.entity.Types.ControlObject;
 import com.cgr.bbp.infrastructure.persistence.entity.Types.DurationImplementation;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -96,6 +98,10 @@ public class Identity {
     private String estadoFlujo;
 
     @ManyToOne
+    @JoinColumn(name = "flow_state_Entity", nullable = true)
+    private FlowStateEntity flowStateEntity;
+    
+    @ManyToOne
     @JoinColumn(name = "Level_good_practice", nullable = true)
     private LevelGoodPractice LevelGoodPractice;
 
@@ -137,12 +143,12 @@ public class Identity {
 
     @ManyToMany
     @JoinTable(name = "resume_material_produced", joinColumns = @JoinColumn(name = "resume_id"), inverseJoinColumns = @JoinColumn(name = "material_produced_id"), uniqueConstraints = {
-        @UniqueConstraint(columnNames = { "resume_id", "material_produced_id" }) })
+            @UniqueConstraint(columnNames = { "resume_id", "material_produced_id" }) })
     private List<TypeMaterialProduced> typeMaterialProduced;
 
     @ManyToMany
     @JoinTable(name = "resume_support_received", joinColumns = @JoinColumn(name = "resume_id"), inverseJoinColumns = @JoinColumn(name = "support_received_id"), uniqueConstraints = {
-        @UniqueConstraint(columnNames = { "resume_id", "support_received_id" }) })
+            @UniqueConstraint(columnNames = { "resume_id", "support_received_id" }) })
     private List<SupportReceived> supportReceived;
 
     @ManyToOne
@@ -155,7 +161,7 @@ public class Identity {
 
     @ManyToMany
     @JoinTable(name = "resume_taxonomy_event", joinColumns = @JoinColumn(name = "resume_id"), inverseJoinColumns = @JoinColumn(name = "taxonomy_event_id"), uniqueConstraints = {
-        @UniqueConstraint(columnNames = { "resume_id", "taxonomy_event_id" }) })
+            @UniqueConstraint(columnNames = { "resume_id", "taxonomy_event_id" }) })
     private List<TaxonomyEvent> taxonomyEvent;
 
     @ManyToOne
@@ -171,5 +177,6 @@ public class Identity {
     @OneToMany(mappedBy = "identity")
     private List<FileEntity> files;
 
-    // private List<TraceabilityEntity> 
+    @OneToMany(mappedBy = "identity")
+    private List<TraceabilityEntity> traceabilies;
 }

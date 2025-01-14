@@ -67,8 +67,8 @@ public class HojadevidaController extends AbstractController {
     @PostMapping("/cargar-archivo")
     public ResponseEntity<?> cargarArchivos(
             @RequestPart(value = "files", required = false) List<MultipartFile> files,
-            @RequestParam(value = "identityId") Integer identityId) {
-        try {
+            @RequestParam(value = "identityId") Integer identityId) throws IOException {
+        
             // Verificar si existe la identidad
             Identity identity = resumeService.getIdentityById(identityId.longValue());
 
@@ -79,11 +79,9 @@ public class HojadevidaController extends AbstractController {
             // Guardar archivos usando el servicio
             List<String> fileNames = fileService.saveFiles(files, identity);
 
-            return ResponseEntity.ok("Archivos cargados exitosamente: " + String.join(", ", fileNames));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Error al guardar los archivos: " + e.getMessage());
-        }
+            return requestResponse(null, "Archivos cargados exitosamente: " + String.join(", ", fileNames), HttpStatus.CREATED, true);
+       
+        
     }
 
     // Método para guardar el archivo en la carpeta
